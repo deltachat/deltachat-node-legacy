@@ -1,0 +1,19 @@
+{
+  "name": "deltachat-core-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/karissa/deltachat-core-node.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/karissa/deltachat-core-node/issues"
+  },
+  "homepage": "https://github.com/karissa/deltachat-core-node#readme"
+}
