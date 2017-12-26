@@ -3,7 +3,18 @@
     {
       "target_name": "deltachat",
       "sources": [ 
-        "src/mrmailbox.cc" 
+        "binding.cc",
+        "src/mrmailboxwrap.cc"
+      ],
+      'xcode_settings': {
+        'OTHER_CFLAGS': [
+          '-g',
+          '-O3',
+        ]
+      },
+      'cflags': [
+        '-g',
+        '-O3',
       ],
       "include_dirs": [
         "<!(node -e \"require('nan')\")",

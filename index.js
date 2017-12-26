@@ -1,3 +1,7 @@
-var addon = require('bindings')('deltachat');
+var deltachat = require('bindings')('deltachat');
 
-console.log(addon.hello()); // 'world'
+function cb () {
+  console.log('called back', arguments)
+}
+
+console.log(deltachat.mrmailbox_new(cb, null, null))
