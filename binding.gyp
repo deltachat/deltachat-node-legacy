@@ -2,7 +2,9 @@
   "targets": [
     {
       "target_name": "deltachat",
-      "sources": [ "src/deltachat.cc" ],
+      "sources": [ 
+        "src/mrmailbox.cc" 
+      ],
       "include_dirs": [
         "<!(node -e \"require('nan')\")",
         "deltachat-core/src",

@@ -1,5 +1,5 @@
-#ifndef SODIDUM_NATIVE_MACROS_H
-#define SODIDUM_NATIVE_MACROS_H
+#ifndef DELTACHAT_MACROS_H 
+#define DELTACHAT_MACROS_H
 
 #include <errno.h>
 #include <string.h>
@@ -33,25 +33,6 @@
 
 #define ERRNO_EXCEPTION(errorno) \
   Nan::ErrnoException(errorno, NULL, strerror(errorno))
-
-#define CALL_SODIUM(fn) \
-  int ret = fn; \
-  if (ret) { \
-    Nan::ThrowError(ERRNO_EXCEPTION(errno)); \
-    return; \
-  }
-
-// SetErrorMessage is only to trigger AsyncWorker's error callback
-#define CALL_SODIUM_ASYNC_WORKER(errorno_var, fn) \
-  int ret = fn; \
-  if (ret) { \
-    SetErrorMessage("error"); \
-    errorno_var = errno; \
-  }
-
-#define CALL_SODIUM_BOOL(fn) \
-  int ret = fn; \
-  info.GetReturnValue().Set(ret == 0 ? Nan::True() : Nan::False());
 
 #define ASSERT_BUFFER(name, var) \
   if (!name->IsObject()) { \
