@@ -1,13 +1,13 @@
+#include "macros.h"
 #include <nan.h>
 #include <mrmailbox.h>
 
-void Method(const Nan::FunctionCallbackInfo<v8::Value>& info) {
-  info.GetReturnValue().Set(Nan::New("world").ToLocalChecked());
+NAN_METHOD(hello) {
+  info.GetReturnValue().Set(LOCAL_STRING("world"));
 }
 
-void Init(v8::Local<v8::Object> exports) {
-  exports->Set(Nan::New("hello").ToLocalChecked(),
-               Nan::New<v8::FunctionTemplate>(Method)->GetFunction());
+NAN_MODULE_INIT(InitAll) {
+  EXPORT_FUNCTION(hello);
 }
 
-NODE_MODULE(hello, Init)
+NODE_MODULE(hello, InitAll)
