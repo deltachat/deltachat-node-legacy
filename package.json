@@ -8,10 +8,8 @@
     "fetch-core": "git submodule update --recursive --init",
     "test": "standard && tape \"test/*.js\"",
     "install": "node-gyp-build \"node preinstall.js\" \"node postinstall.js\"",
-    "prebuild": "prebuildify -a --strip --preinstall \"node preinstall.js\"
---postinstall \"node postinstall.js\"",
-    "prebuild-ia32": "prebuildify -a --strip --preinstall \"node
-preinstall.js\" --postinstall \"node postinstall.js\" --arch=ia32"
+    "prebuild": "prebuildify -a --strip --preinstall \"node preinstall.js\" --postinstall \"node postinstall.js\"",
+    "prebuild-ia32": "prebuildify -a --strip --preinstall \"node preinstall.js\" --postinstall \"node postinstall.js\" --arch=ia32"
   },
   "repository": {
     "type": "git",
@@ -24,6 +22,8 @@ preinstall.js\" --postinstall \"node postinstall.js\" --arch=ia32"
   },
   "homepage": "https://github.com/karissa/deltachat-core-node#readme",
   "dependencies": {
+    "bindings": "^1.3.0",
+    "nan": "^2.8.0",
     "node-gyp-build": "^3.2.2"
   },
   "devDependencies": {

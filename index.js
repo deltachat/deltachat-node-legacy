@@ -1,3 +1,3 @@
-var sodium = require('node-gyp-build')(__dirname)
+var addon = require('bindings')('deltachat');
 
-module.exports = sodium
+console.log(addon.hello()); // 'world'
