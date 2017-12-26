@@ -1,4 +1,0 @@
-cd deltachat-core
-./autogen.sh
-make
-sudo make install prefix=/usr
