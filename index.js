@@ -1,7 +1,3 @@
-var deltachat = require('bindings')('deltachat');
+var deltachat = require('node-gyp-build')(__dirname)
 
-function cb () {
-  console.log('called back', arguments)
-}
-
-console.log(deltachat.mrmailbox_new(cb, null, null))
+module.exports = deltachat
