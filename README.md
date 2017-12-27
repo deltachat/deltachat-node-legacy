@@ -7,8 +7,6 @@ PROGRESS.
 npm install deltachat-node
 ```
 
-## API
-
 ## Usage
 
 #### Set up
