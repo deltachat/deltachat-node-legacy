@@ -6,16 +6,17 @@
         "binding.cc",
         "src/mrmailboxwrap.cc"
       ],
-      'xcode_settings': {
-        'OTHER_CFLAGS': [
-          '-g',
-          '-O3',
-        ]
-      },
-      'cflags': [
-        '-g',
-        '-O3',
+      "conditions": [
+        [ 'OS=="mac"', {
+          "xcode_settings": {
+            'OTHER_CPLUSPLUSFLAGS' : ['-std=c++11','-stdlib=libc++', '-v'],
+            'OTHER_LDFLAGS': ['-stdlib=libc++'],
+            'GCC_ENABLE_CPP_EXCEPTIONS': 'YES'
+          }
+        }]
       ],
+      "cflags_cc!": [ "-fno-rtti", "-fno-exceptions" ],
+      "cflags!": [ "-fno-exceptions" ],
       "include_dirs": [
         "<!(node -e \"require('nan')\")",
         "deltachat-core/src",
