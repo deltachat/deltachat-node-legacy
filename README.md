@@ -22,7 +22,7 @@ var mailbox = deltachat.mrmailbox_new(my_delta_handler, null, null)
 deltachat.mrmailbox_set_config(mailbox, "addr", "alice@delta.chat") // use some real test credentials here
 deltachat.mrmailbox_set_config(mailbox, "mail_pw", "***") 
 
-mrmailbox_configure_and_connect(mailbox)
+deltachat.mrmailbox_configure_and_connect(mailbox)
 ```
 
 #### Sending a message
