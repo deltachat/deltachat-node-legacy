@@ -7,9 +7,9 @@ function cb () {
   console.log('called back', arguments)
 }
 
-var mailbox = deltachat.mailbox_new(cb, null, null)
+var mailbox = deltachat.mrmailbox_new(cb, null, null)
 
-deltachat.mailbox_set_config(mailbox, 'addr', argv.email)
-deltachat.mailbox_set_config(mailbox, 'mail_pw', argv.mail_pw)
+deltachat.mrmailbox_set_config(mailbox, 'addr', argv.email)
+deltachat.mrmailbox_set_config(mailbox, 'mail_pw', argv.mail_pw)
 
-deltachat.mailbox_configure_and_connect()
+deltachat.mrmailbox_configure_and_connect()
