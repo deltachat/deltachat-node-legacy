@@ -1,5 +1,5 @@
 {
-  "name": "deltachat-core-node",
+  "name": "deltachat-node",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/karissa/deltachat-core-node.git"
+    "url": "git+ssh://git@github.com/karissa/deltachat-node.git"
   },
   "author": "",
   "license": "GPL-3",
   "bugs": {
-    "url": "https://github.com/karissa/deltachat-core-node/issues"
+    "url": "https://github.com/karissa/deltachat-node/issues"
   },
-  "homepage": "https://github.com/karissa/deltachat-core-node#readme",
+  "homepage": "https://github.com/karissa/deltachat-node#readme",
   "dependencies": {
     "nan": "^2.8.0",
     "node-gyp-build": "^3.2.2"
