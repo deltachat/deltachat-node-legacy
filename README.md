@@ -13,7 +13,7 @@ npm install deltachat-node
 ```js
 var deltachat = require('deltachat-node')
 
-function my_delta_handler(mailbox, event, data1, data2) {
+function my_delta_handler(mailbox, ev, data1, data2) {
   return 0
 }
 
@@ -33,7 +33,7 @@ var chat_id = deltachat.mrmailbox_create_chat_by_contact_id(mailbox, contact_id)
 deltachat.mrmailbox_send_text_msg(mailbox, chat_id, "Hi, here is my first message!");
 ```
 
-There are many more functions available dealing with contacts, messages, and the mailbox. Read more about the API on the [deltachat C documentation](https://deltachat.github.io/deltachat-core/html/).
+There are many more functions available dealing with contacts, messages, and the mailbox. Learn about all of the functions in API in the [deltachat C documentation](https://deltachat.github.io/deltachat-core/html/).
 
 ## License
 GPLv3
