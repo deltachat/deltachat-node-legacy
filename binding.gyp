@@ -4,7 +4,9 @@
       "target_name": "deltachat",
       "sources": [ 
         "binding.cc",
-        "src/mrmailboxwrap.cc"
+        "src/mrmailbox_wrap.cc",
+        "src/mrarray_wrap.cc",
+        "src/mrmsg_wrap.cc"
       ],
       "conditions": [
         [ 'OS=="mac"', {

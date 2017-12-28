@@ -1,4 +1,4 @@
-#include "mrmailboxwrap.h"
+#include "mrmailbox_wrap.h"
 #include "macros.h"
 
 static Nan::Persistent<v8::FunctionTemplate> mrmailbox_constructor;
