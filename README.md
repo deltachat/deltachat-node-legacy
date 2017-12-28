@@ -33,7 +33,7 @@ var chat_id = deltachat.mrmailbox_create_chat_by_contact_id(mailbox, contact_id)
 deltachat.mrmailbox_send_text_msg(mailbox, chat_id, "Hi, here is my first message!");
 ```
 
-There are many more functions available dealing with contacts, messages, and the mailbox. Learn about all of the functions in API in the [deltachat C documentation](https://deltachat.github.io/deltachat-core/html/).
+There are many more functions available that further manage and retrieve contacts, messages, and chats. Learn about all of the functions in API in the [deltachat C documentation](https://deltachat.github.io/deltachat-core/html/).
 
 ## License
 GPLv3
