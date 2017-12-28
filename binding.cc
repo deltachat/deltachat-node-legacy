@@ -88,6 +88,11 @@ NAN_METHOD(mrarray_get_id) {
   );
 }
 
+NAN_METHOD(mrarray_unref) {
+  ASSERT_UNWRAP(info[0], array, MrArrayWrap);
+  mrarray_unref(array->state);
+}
+
 
 /**
  * mrmsg
@@ -97,6 +102,11 @@ NAN_METHOD(mrmsg_get_text) {
   ASSERT_UNWRAP(info[0], msg, MrMsgWrap);
   const char *text = mrmsg_get_text(msg->state);
   info.GetReturnValue().Set(*text);
+}
+
+NAN_METHOD(mrmsg_unref) {
+  ASSERT_UNWRAP(info[0], msg, MrMsgWrap);
+  mrmsg_unref(msg->state);
 }
 
 NAN_MODULE_INIT(InitAll) {
@@ -114,8 +124,10 @@ NAN_MODULE_INIT(InitAll) {
 
   EXPORT_FUNCTION(mrarray_get_cnt);
   EXPORT_FUNCTION(mrarray_get_id);
+  EXPORT_FUNCTION(mrarray_unref);
 
   EXPORT_FUNCTION(mrmsg_get_text);
+  EXPORT_FUNCTION(mrmsg_unref);
 }
 
 NODE_MODULE(deltachat, InitAll);
