@@ -19,6 +19,77 @@ NAN_METHOD(mrmailbox_set_config) {
   mrmailbox_set_config(mailbox->state, *key, *value);
 }
 
+NAN_METHOD(mrmailbox_set_config_int) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  v8::String::Utf8Value key(info[1]);
+  ASSERT_UINT(info[2], value);
+  mrmailbox_set_config_int(mailbox->state, *key, value);
+}
+
+NAN_METHOD(mrmailbox_get_config) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  v8::String::Utf8Value key(info[1]);
+  v8::String::Utf8Value def(info[2]);
+  const char *ret = mrmailbox_get_config(mailbox->state, *key, *def);
+  info.GetReturnValue().Set(*ret);
+}
+
+NAN_METHOD(mrmailbox_get_config_int) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  v8::String::Utf8Value key(info[1]);
+  ASSERT_UINT(info[2], def);
+  info.GetReturnValue().Set(
+    Nan::New<v8::Number>(mrmailbox_get_config_int(mailbox->state, *key, def))
+  );
+}
+
+NAN_METHOD(mrmailbox_get_info) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  const char *ret = mrmailbox_get_info(mailbox->state);
+  info.GetReturnValue().Set(*ret);
+}
+
+NAN_METHOD(mrmailbox_get_version_str) {
+  const char *ret = mrmailbox_get_version_str();
+  info.GetReturnValue().Set(*ret);
+}
+
+NAN_METHOD(mrmailbox_connect) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  mrmailbox_connect(mailbox->state);
+}
+
+NAN_METHOD(mrmailbox_disconnect) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  mrmailbox_disconnect(mailbox->state);
+}
+
+NAN_METHOD(mrmailbox_heartbeat) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  mrmailbox_heartbeat(mailbox->state);
+}
+
+NAN_METHOD(mrmailbox_open) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap)
+  v8::String::Utf8Value dbfile(info[1]);
+  v8::String::Utf8Value blobdir(info[2]);
+  info.GetReturnValue().Set(
+    Nan::New<v8::Number>(mrmailbox_open(mailbox->state, *dbfile, *blobdir))
+  );
+}
+
+NAN_METHOD(mrmailbox_close) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  mrmailbox_close(mailbox->state);
+}
+
+NAN_METHOD(mrmailbox_is_open) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap)
+  info.GetReturnValue().Set(
+    Nan::New<v8::Number>(mrmailbox_is_open(mailbox->state))
+  );
+}
+
 NAN_METHOD(mrmailbox_configure_and_connect) {
   ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap)
   mrmailbox_configure_and_connect(mailbox->state);
@@ -69,6 +140,11 @@ NAN_METHOD(mrmailbox_get_msg) {
   );
 }
 
+NAN_METHOD(mrmailbox_unref) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  mrmailbox_unref(mailbox->state);
+}
+
 /** 
  * mrarray
  **/
@@ -115,8 +191,20 @@ NAN_MODULE_INIT(InitAll) {
   MrMsgWrap::Init();
 
   EXPORT_FUNCTION(mrmailbox_new);
+  EXPORT_FUNCTION(mrmailbox_unref);
+  EXPORT_FUNCTION(mrmailbox_open);
+  EXPORT_FUNCTION(mrmailbox_close);
+  EXPORT_FUNCTION(mrmailbox_is_open);
+  EXPORT_FUNCTION(mrmailbox_heartbeat);
+  EXPORT_FUNCTION(mrmailbox_get_version_str);
+  EXPORT_FUNCTION(mrmailbox_get_info);
   EXPORT_FUNCTION(mrmailbox_set_config);
+  EXPORT_FUNCTION(mrmailbox_get_config);
+  EXPORT_FUNCTION(mrmailbox_set_config_int);
+  EXPORT_FUNCTION(mrmailbox_get_config_int);
   EXPORT_FUNCTION(mrmailbox_configure_and_connect);
+  EXPORT_FUNCTION(mrmailbox_connect);
+  EXPORT_FUNCTION(mrmailbox_disconnect);
   EXPORT_FUNCTION(mrmailbox_create_chat_by_contact_id);
   EXPORT_FUNCTION(mrmailbox_send_text_msg);
   EXPORT_FUNCTION(mrmailbox_get_chat_msgs);
