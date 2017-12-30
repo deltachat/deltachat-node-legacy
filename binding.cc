@@ -255,9 +255,73 @@ NAN_METHOD(mrmailbox_delete_chat) {
   mrmailbox_delete_chat(mailbox->state, chat_id);
 }
 
+NAN_METHOD(mrmailbox_send_image_msg) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  ASSERT_UINT(info[1], chat_id);
+  v8::String::Utf8Value file(info[2]);
+  v8::String::Utf8Value filemime(info[3]);
+  ASSERT_UINT(info[4], width);
+  ASSERT_UINT(info[5], height);
+  info.GetReturnValue().Set(
+    Nan::New<v8::Number>(mrmailbox_send_text_msg(mailbox->state, chat_id, *file, *filemime, width, height))
+  );
+}
 
+NAN_METHOD(mrmailbox_send_video_msg) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  ASSERT_UINT(info[1], chat_id);
+  v8::String::Utf8Value file(info[2]);
+  v8::String::Utf8Value filemime(info[3]);
+  ASSERT_UINT(info[4], width);
+  ASSERT_UINT(info[5], height);
+  ASSERT_UINT(info[6], duration);
+  info.GetReturnValue().Set(
+    Nan::New<v8::Number>(mrmailbox_send_video_msg(mailbox->state, chat_id, *file, *filemime, width, height, duration))
+  );
+}
 
+NAN_METHOD(mrmailbox_send_voice_msg) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  ASSERT_UINT(info[1], chat_id);
+  v8::String::Utf8Value file(info[2]);
+  v8::String::Utf8Value filemime(info[3]);
+  ASSERT_UINT(info[4], duration);
+  info.GetReturnValue().Set(
+    Nan::New<v8::Number>(mrmailbox_send_voice_msg(mailbox->state, chat_id, *file, *filemime, duration))
+  );
+}
 
+NAN_METHOD(mrmailbox_send_audio_msg) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  ASSERT_UINT(info[1], chat_id);
+  v8::String::Utf8Value file(info[2]);
+  v8::String::Utf8Value filemime(info[3]);
+  ASSERT_UINT(info[4], duration);
+  v8::String::Utf8Value author(info[5]);
+  v8::String::Utf8Value trackname(info[6]);
+  info.GetReturnValue().Set(
+    Nan::New<v8::Number>(mrmailbox_send_audio_msg(mailbox->state, chat_id, *file, *filemime, duration, *author, *trackname))
+  );
+}
+
+NAN_METHOD(mrmailbox_send_file_msg) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  ASSERT_UINT(info[1], chat_id);
+  v8::String::Utf8Value file(info[2]);
+  v8::String::Utf8Value filemime(info[3]);
+  info.GetReturnValue().Set(
+    Nan::New<v8::Number>(mrmailbox_send_file_msg(mailbox->state, chat_id, *file, *filemime))
+  );
+}
+
+NAN_METHOD(mrmailbox_send_vcard_msg) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  ASSERT_UINT(info[1], chat_id);
+  ASSERT_UINT(info[2], contact_id);
+  info.GetReturnValue().Set(
+    Nan::New<v8::Number>(mrmailbox_send_file_msg(mailbox->state, chat_id, contact_id))
+  );
+}
 
 /** 
  * mrarray
@@ -321,6 +385,12 @@ NAN_MODULE_INIT(InitAll) {
   EXPORT_FUNCTION(mrmailbox_disconnect);
   EXPORT_FUNCTION(mrmailbox_create_chat_by_contact_id);
   EXPORT_FUNCTION(mrmailbox_send_text_msg);
+  EXPORT_FUNCTION(mrmailbox_send_image_msg);
+  EXPORT_FUNCTION(mrmailbox_send_video_msg);
+  EXPORT_FUNCTION(mrmailbox_send_voice_msg);
+  EXPORT_FUNCTION(mrmailbox_send_audio_msg);
+  EXPORT_FUNCTION(mrmailbox_send_file_msg);
+  EXPORT_FUNCTION(mrmailbox_send_vcard_msg);
   EXPORT_FUNCTION(mrmailbox_get_chat_msgs);
   EXPORT_FUNCTION(mrmailbox_get_chatlist);
   EXPORT_FUNCTION(mrmailbox_get_chat);
