@@ -159,13 +159,13 @@ NAN_METHOD(mrmailbox_get_chat) {
   ASSERT_UINT(info[1], chat_id);
   info.GetReturnValue().Set(
     mrmailbox_get_chat(mailbox->state, chat_id)
-  )
+  );
 }
 
 NAN_METHOD(mrmailbox_marknoticed_chat) {
   ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
   ASSERT_UINT(info[1], chat_id);
-  mrmailbox_marknoticed_chat(mailbox->state, chat_id)
+  mrmailbox_marknoticed_chat(mailbox->state, chat_id);
 }
 
 NAN_METHOD(mrmailbox_get_chat_id_by_contact_id) {
@@ -173,7 +173,7 @@ NAN_METHOD(mrmailbox_get_chat_id_by_contact_id) {
   ASSERT_UINT(info[1], contact_id);
   info.GetReturnValue().Set(
     Nan::New<v8::Number>(mrmailbox_get_chat_id_by_contact_id(mailbox->state, contact_id))
-  )
+  );
 }
 
 NAN_METHOD(mrmailbox_get_chat_media) {
@@ -182,8 +182,8 @@ NAN_METHOD(mrmailbox_get_chat_media) {
   ASSERT_UINT(info[2], msg_type);
   ASSERT_UINT(info[3], or_msg_type);
   info.GetReturnValue().Set(
-    mrmailbox_get_chat_media(mailbox->state, contact_id)
-  )
+    mrmailbox_get_chat_media(mailbox->state, chat_id, msg_type, or_msg_type)
+  );
 }
 
 NAN_METHOD(mrmailbox_get_next_media) {
@@ -192,22 +192,22 @@ NAN_METHOD(mrmailbox_get_next_media) {
   ASSERT_UINT(info[2], dir);
   info.GetReturnValue().Set(
     Nan::New<v8::Number>(mrmailbox_get_next_media(mailbox->state, curr_msg_id, dir))
-  )
+  );
 }
 
 NAN_METHOD(mrmailbox_get_chat_contacts) {
   ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
   ASSERT_UINT(info[1], chat_id);
   info.GetReturnValue().Set(
-    mrmailbox_get_next_media(mailbox->state, chat_id)
-  )
+    mrmailbox_get_chat_contacts(mailbox->state, chat_id)
+  );
 }
 
 NAN_METHOD(mrmailbox_get_fresh_msgs) {
   ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
   info.GetReturnValue().Set(
     mrmailbox_get_fresh_msgs(mailbox->state)
-  )
+  );
 }
 
 NAN_METHOD(mrmailbox_search_msgs) {
@@ -216,16 +216,14 @@ NAN_METHOD(mrmailbox_search_msgs) {
   v8::String::Utf8Value query(info[2]);
   info.GetReturnValue().Set(
     mrmailbox_search_msgs(mailbox->state, chat_id, *query)
-  )
+  );
 }
 
 NAN_METHOD(mrmailbox_set_draft) {
   ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
   ASSERT_UINT(info[1], chat_id);
   v8::String::Utf8Value msg(info[2]);
-  info.GetReturnValue().Set(
-    mrmailbox_set_draft(mailbox->state, chat_id, *msg)
-  )
+  mrmailbox_set_draft(mailbox->state, chat_id, *msg);
 }
 
 NAN_METHOD(mrmailbox_get_total_msg_count) {
@@ -233,7 +231,7 @@ NAN_METHOD(mrmailbox_get_total_msg_count) {
   ASSERT_UINT(info[1], chat_id);
   info.GetReturnValue().Set(
     Nan::New<v8::Number>(mrmailbox_get_total_msg_count(mailbox->state, chat_id))
-  )
+  );
 }
 
 NAN_METHOD(mrmailbox_get_fresh_msg_count) {
@@ -241,19 +239,20 @@ NAN_METHOD(mrmailbox_get_fresh_msg_count) {
   ASSERT_UINT(info[1], chat_id);
   info.GetReturnValue().Set(
     Nan::New<v8::Number>(mrmailbox_get_fresh_msg_count(mailbox->state, chat_id))
-  )
+  );
 }
 
 NAN_METHOD(mrmailbox_archive_chat) {
   ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
   ASSERT_UINT(info[1], chat_id);
-  mrmailbox_archive_chat(mailbox->state, chat_id)
+  ASSERT_UINT(info[2], archive);
+  mrmailbox_archive_chat(mailbox->state, chat_id, archive);
 }
 
 NAN_METHOD(mrmailbox_delete_chat) {
   ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
   ASSERT_UINT(info[1], chat_id);
-  mrmailbox_delete_chat(mailbox->state, chat_id)
+  mrmailbox_delete_chat(mailbox->state, chat_id);
 }
 
 
