@@ -92,7 +92,63 @@ NAN_METHOD(mrmailbox_is_open) {
 
 NAN_METHOD(mrmailbox_configure_and_connect) {
   ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap)
-  mrmailbox_configure_and_connect(mailbox->state);
+  info.GetReturnValue().Set(
+    Nan::New<v8::Number>(mrmailbox_configure_and_connect(mailbox->state))
+  )
+}
+
+NAN_METHOD(mrmailbox_is_configured) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap)
+  info.GetReturnValue().Set(
+    Nan::New<v8::Number>(mrmailbox_is_configured(mailbox->state))
+  )
+}
+
+NAN_METHOD(mrmailbox_stop_ongoing_process) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap)
+  mrmailbox_stop_ongoing_process(mailbox->state)
+}
+
+NAN_METHOD(mrmailbox_initiate_key_transfer) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap)
+  info.GetReturnValue().Set(
+    Nan::New<v8::String>(mrmailbox_initiate_key_transfer(mailbox->state))
+  )
+}
+
+NAN_METHOD(mrmailbox_continue_key_transfer) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap)
+  ASSERT_UINT(info[1], msg_id);
+  v8::String::Utf8Value setup_code(info[2]);
+  info.GetReturnValue().Set(
+    Nan::New<v8::Number>(mrmailbox_continue_key_transfer(mailbox->state, msg_id, *setup_code))
+  )
+}
+
+NAN_METHOD(mrmailbox_imex) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap)
+  ASSERT_UINT(info[1], what);
+  v8::String::Utf8Value param_one(info[2]);
+  v8::String::Utf8Value param_two(info[3]);
+  info.GetReturnValue().Set(
+    Nan::New<v8::Number>(mrmailbox_imex(mailbox->state, what, *param_one, *param_two))
+  )
+}
+
+NAN_METHOD(mrmailbox_imex_has_backup) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap)
+  v8::String::Utf8Value dir_name(info[1]);
+  info.GetReturnValue().Set(
+    Nan::New<v8::String>(mrmailbox_imex_has_backup(mailbox->state, *dir_name))
+  )
+}
+
+NAN_METHOD(mrmailbox_check_password) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap)
+  v8::String::Utf8Value test_pw(info[1]);
+  info.GetReturnValue().Set(
+    Nan::New<v8::Number>(mrmailbox_check_password(mailbox->state, *test_pw))
+  )
 }
 
 NAN_METHOD(mrmailbox_create_contact) {
@@ -319,9 +375,164 @@ NAN_METHOD(mrmailbox_send_vcard_msg) {
   ASSERT_UINT(info[1], chat_id);
   ASSERT_UINT(info[2], contact_id);
   info.GetReturnValue().Set(
-    Nan::New<v8::Number>(mrmailbox_send_file_msg(mailbox->state, chat_id, contact_id))
+    Nan::New<v8::Number>(mrmailbox_send_vcard_msg(mailbox->state, chat_id, contact_id))
   );
 }
+
+NAN_METHOD(mrmailbox_create_group_chat) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  v8::String::Utf8Value chatname(info[1]);
+  info.GetReturnValue().Set(
+    Nan::New<v8::Number>(mrmailbox_create_group_chat(mailbox->state, *chatname))
+  );
+}
+
+NAN_METHOD(mrmailbox_set_chat_name) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  ASSERT_UINT(info[1], chat_id);
+  v8::String::Utf8Value new_name(info[2]);
+  info.GetReturnValue().Set(
+    Nan::New<v8::Number>(mrmailbox_create_group_chat(mailbox->state, chat_id, *new_name))
+  );
+}
+
+NAN_METHOD(mrmailbox_set_chat_profile_image) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  ASSERT_UINT(info[1], chat_id);
+  v8::String::Utf8Value new_image(info[2]);
+  info.GetReturnValue().Set(
+    Nan::New<v8::Number>(mrmailbox_create_group_chat(mailbox->state, chat_id, *new_image))
+  );
+}
+
+NAN_METHOD(mrmailbox_is_contact_in_chat) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  ASSERT_UINT(info[1], chat_id);
+  ASSERT_UINT(info[2], contact_id);
+  info.GetReturnValue().Set(
+    Nan::New<v8::Number>(mrmailbox_create_group_chat(mailbox->state, chat_id, contact_id))
+  );
+}
+
+NAN_METHOD(mrmailbox_add_contact_to_chat) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  ASSERT_UINT(info[1], chat_id);
+  ASSERT_UINT(info[2], contact_id);
+  info.GetReturnValue().Set(
+    Nan::New<v8::Number>(mrmailbox_add_contact_to_chat(mailbox->state, chat_id, contact_id))
+  );
+}
+
+NAN_METHOD(mrmailbox_remove_contact_from_chat) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  ASSERT_UINT(info[1], chat_id);
+  ASSERT_UINT(info[2], contact_id);
+  info.GetReturnValue().Set(
+    Nan::New<v8::Number>(mrmailbox_remove_contact_from_chat(mailbox->state, chat_id, contact_id))
+  );
+}
+
+NAN_METHOD(mrmailbox_add_address_book) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  v8::String::Utf8Value adr_book(info[1]);
+  info.GetReturnValue().Set(
+    Nan::New<v8::Number>(mrmailbox_add_address_book(mailbox->state, *adr_book))
+  );
+}
+
+NAN_METHOD(mrmailbox_get_known_contacts) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  v8::String::Utf8Value query(info[1]);
+  info.GetReturnValue().Set(
+    mrmailbox_get_known_contacts(mailbox->state, *query)
+  );
+}
+
+NAN_METHOD(mrmailbox_get_blocked_contacts) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  info.GetReturnValue().Set(
+    mrmailbox_get_blocked_contacts(mailbox->state)
+  );
+}
+
+NAN_METHOD(mrmailbox_get_blocked_count) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  info.GetReturnValue().Set(
+    Nan::New<v8::Number>(mrmailbox_get_blocked_count(mailbox->state))
+  );
+}
+
+NAN_METHOD(mrmailbox_get_contact) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  ASSERT_UINT(info[1], contact_id);
+  info.GetReturnValue().Set(
+    mrmailbox_get_contact(mailbox->state, contact_id)
+  );
+}
+
+NAN_METHOD(mrmailbox_marknoticed_contact) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  ASSERT_UINT(info[1], contact_id);
+  mrmailbox_marknoticed_contact(mailbox->state, contact_id)
+}
+
+NAN_METHOD(mrmailbox_block_contact) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  ASSERT_UINT(info[1], contact_id);
+  mrmailbox_block_contact(mailbox->state, contact_id)
+}
+
+NAN_METHOD(mrmailbox_get_contact_encrinfo) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  ASSERT_UINT(info[1], contact_id);
+  const char* encrinfo = mrmailbox_get_contact_encrinfo(mailbox->state, contact_id)
+  info.GetReturnValue().Set(Nan::New<v8::String>(encrinfo))
+}
+
+NAN_METHOD(mrmailbox_delete_contact) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  ASSERT_UINT(info[1], contact_id);
+  info.GetReturnValue().Set(Nan::New<v8::Number>(mrmailbox_delete_contact(mailbox->state, contact_id)))
+}
+
+NAN_METHOD(mrmailbox_get_msg_info) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  ASSERT_UINT(info[1], msg_id);
+  info.GetReturnValue().Set(Nan::New<v8::String>(mrmailbox_get_msg_info(mailbox->state, msg_id)))
+}
+
+NAN_METHOD(mrmailbox_forward_msgs) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  ASSERT_UINT(info[1], msg_ids);
+  ASSERT_UINT(info[2], msg_cnt);
+  ASSERT_UINT(info[3], chat_id);
+  mrmailbox_forward_msgs(mailbox->state, *msg_ids, msg_cnt, chat_id)
+}
+
+NAN_METHOD(mrmailbox_star_msgs) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  ASSERT_UINT(info[1], msg_ids);
+  ASSERT_UINT(info[2], msg_cnt);
+  ASSERT_UINT(info[3], chat_id);
+  mrmailbox_star_msgs(mailbox->state, *msg_ids, msg_cnt, chat_id)
+}
+
+NAN_METHOD(mrmailbox_delete_msgs) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  ASSERT_UINT(info[1], msg_ids);
+  ASSERT_UINT(info[2], msg_cnt);
+  ASSERT_UINT(info[3], chat_id);
+  mrmailbox_delete_msgs(mailbox->state, *msg_ids, msg_cnt, chat_id)
+}
+
+NAN_METHOD(mrmailbox_markseen_msgs) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  ASSERT_UINT(info[1], msg_ids);
+  ASSERT_UINT(info[2], msg_cnt);
+  ASSERT_UINT(info[3], chat_id);
+  mrmailbox_markseen_msgs(mailbox->state, *msg_ids, msg_cnt, chat_id)
+}
+
 
 /** 
  * mrarray
@@ -407,6 +618,33 @@ NAN_MODULE_INIT(InitAll) {
   EXPORT_FUNCTION(mrmailbox_get_fresh_msg_count);
   EXPORT_FUNCTION(mrmailbox_archive_chat);
   EXPORT_FUNCTION(mrmailbox_delete_chat);
+  EXPORT_FUNCTION(mrmailbox_create_group_chat);
+  EXPORT_FUNCTION(mrmailbox_set_chat_name);
+  EXPORT_FUNCTION(mrmailbox_set_chat_profile_image);
+  EXPORT_FUNCTION(mrmailbox_is_contact_in_chat);
+  EXPORT_FUNCTION(mrmailbox_add_contact_to_chat);
+  EXPORT_FUNCTION(mrmailbox_remove_contact_from_chat);
+  EXPORT_FUNCTION(mrmailbox_create_contact);
+  EXPORT_FUNCTION(mrmailbox_add_address_book);
+  EXPORT_FUNCTION(mrmailbox_get_known_contacts);
+  EXPORT_FUNCTION(mrmailbox_get_blocked_contacts);
+  EXPORT_FUNCTION(mrmailbox_get_blocked_count);
+  EXPORT_FUNCTION(mrmailbox_get_contact);
+  EXPORT_FUNCTION(mrmailbox_block_contact);
+  EXPORT_FUNCTION(mrmailbox_get_contact_encrinfo);
+  EXPORT_FUNCTION(mrmailbox_delete_contact);
+  EXPORT_FUNCTION(mrmailbox_get_msg_info);
+  EXPORT_FUNCTION(mrmailbox_forward_msgs);
+  EXPORT_FUNCTION(mrmailbox_star_msgs);
+  EXPORT_FUNCTION(mrmailbox_delete_msgs);
+  EXPORT_FUNCTION(mrmailbox_markseen_msgs);
+  EXPORT_FUNCTION(mrmailbox_is_configured);
+  EXPORT_FUNCTION(mrmailbox_stop_ongoing_process);
+  EXPORT_FUNCTION(mrmailbox_initiate_key_transfer);
+  EXPORT_FUNCTION(mrmailbox_continue_key_transfer);
+  EXPORT_FUNCTION(mrmailbox_imex);
+  EXPORT_FUNCTION(mrmailbox_imex_has_backup);
+  EXPORT_FUNCTION(mrmailbox_check_password);
 
   EXPORT_FUNCTION(mrarray_get_cnt);
   EXPORT_FUNCTION(mrarray_get_id);
