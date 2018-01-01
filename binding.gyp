@@ -8,6 +8,9 @@
         "src/mrarray_wrap.cc",
         "src/mrmsg_wrap.cc"
       ],
+      "libraries": [
+        "../deltachat-core/builddir/src/libdeltachat.dylib"
+      ],
       "conditions": [
         [ 'OS=="mac"', {
           "xcode_settings": {
