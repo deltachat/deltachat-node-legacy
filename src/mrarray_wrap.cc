@@ -3,12 +3,12 @@
 
 static Nan::Persistent<v8::FunctionTemplate> mrarray_constructor;
 
-MrArrayWrap::MrArrayWrap (mrarray_t * array) : state(array);
+MrArrayWrap::MrArrayWrap () {}
 
 MrArrayWrap::~MrArrayWrap () {}
 
 NAN_METHOD(MrArrayWrap::New) {
-  MrArrayWrap* obj = new MrArrayWrap(info[0]);
+  MrArrayWrap* obj = new MrArrayWrap();
   obj->Wrap(info.This());
   info.GetReturnValue().Set(info.This());
 }
@@ -29,7 +29,6 @@ v8::Local<v8::Value> MrArrayWrap::NewInstance () {
   instance = Nan::NewInstance(constructorHandle->GetFunction()).ToLocalChecked();
 
   MrArrayWrap *self = Nan::ObjectWrap::Unwrap<MrArrayWrap>(instance);
-  self->state = mrarray_new();
 
   return scope.Escape(instance);
 }

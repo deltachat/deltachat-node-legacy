@@ -10,7 +10,7 @@ public:
 
   static void Init ();
   static v8::Local<v8::Value> NewInstance ();
-  MrArrayWrap (mrarray_t * array);
+  MrArrayWrap ();
   ~MrArrayWrap ();
 
 private:
