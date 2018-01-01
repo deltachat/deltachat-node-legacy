@@ -178,45 +178,45 @@ NAN_METHOD(mrmailbox_send_text_msg) {
   );
 }
 
-NAN_METHOD(mrmailbox_get_chat_msgs) {
-  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
-  ASSERT_UINT(info[1], chat_id);
-  ASSERT_UINT(info[2], flags);
-  ASSERT_UINT(info[3], markerbefore);
-  info.GetReturnValue().Set(
-    mrmailbox_get_chat_msgs(mailbox->state, chat_id, flags, markerbefore)
-  );
-}
+//NAN_METHOD(mrmailbox_get_chat_msgs) {
+//  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+//  ASSERT_UINT(info[1], chat_id);
+//  ASSERT_UINT(info[2], flags);
+//  ASSERT_UINT(info[3], markerbefore);
+//  info.GetReturnValue().Set(
+//    mrmailbox_get_chat_msgs(mailbox->state, chat_id, flags, markerbefore)
+//  );
+//}
 
-NAN_METHOD(mrmailbox_get_msg) {
-  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
-  ASSERT_UINT(info[1], msg_id);
-  info.GetReturnValue().Set(
-    mrmailbox_get_msg(mailbox->state, msg_id)
-  );
-}
+//NAN_METHOD(mrmailbox_get_msg) {
+//  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+//  ASSERT_UINT(info[1], msg_id);
+//  info.GetReturnValue().Set(
+//    mrmailbox_get_msg(mailbox->state, msg_id)
+//  );
+//}
 
 NAN_METHOD(mrmailbox_unref) {
   ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
   mrmailbox_unref(mailbox->state);
 }
 
-NAN_METHOD(mrmailbox_get_chatlist) {
-  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
-  ASSERT_UINT(info[1], listflags);
-  v8::String::Utf8Value query(info[2]);
-  info.GetReturnValue().Set(
-    mrmailbox_get_chatlist(mailbox->state, listflags, *query)
-  );
-}
+//NAN_METHOD(mrmailbox_get_chatlist) {
+//  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+//  ASSERT_UINT(info[1], listflags);
+//  v8::String::Utf8Value query(info[2]);
+//  info.GetReturnValue().Set(
+//    mrmailbox_get_chatlist(mailbox->state, listflags, *query)
+//  );
+//}
 
-NAN_METHOD(mrmailbox_get_chat) {
-  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
-  ASSERT_UINT(info[1], chat_id);
-  info.GetReturnValue().Set(
-    mrmailbox_get_chat(mailbox->state, chat_id)
-  );
-}
+//NAN_METHOD(mrmailbox_get_chat) {
+//  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+//  ASSERT_UINT(info[1], chat_id);
+//  info.GetReturnValue().Set(
+//    mrmailbox_get_chat(mailbox->state, chat_id)
+//  );
+//}
 
 NAN_METHOD(mrmailbox_marknoticed_chat) {
   ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
@@ -232,15 +232,15 @@ NAN_METHOD(mrmailbox_get_chat_id_by_contact_id) {
   );
 }
 
-NAN_METHOD(mrmailbox_get_chat_media) {
-  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
-  ASSERT_UINT(info[1], chat_id);
-  ASSERT_UINT(info[2], msg_type);
-  ASSERT_UINT(info[3], or_msg_type);
-  info.GetReturnValue().Set(
-    mrmailbox_get_chat_media(mailbox->state, chat_id, msg_type, or_msg_type)
-  );
-}
+//NAN_METHOD(mrmailbox_get_chat_media) {
+//  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+//  ASSERT_UINT(info[1], chat_id);
+//  ASSERT_UINT(info[2], msg_type);
+//  ASSERT_UINT(info[3], or_msg_type);
+//  info.GetReturnValue().Set(
+//    mrmailbox_get_chat_media(mailbox->state, chat_id, msg_type, or_msg_type)
+//  );
+//}
 
 NAN_METHOD(mrmailbox_get_next_media) {
   ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
@@ -251,29 +251,25 @@ NAN_METHOD(mrmailbox_get_next_media) {
   );
 }
 
-NAN_METHOD(mrmailbox_get_chat_contacts) {
-  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
-  ASSERT_UINT(info[1], chat_id);
-  info.GetReturnValue().Set(
-    mrmailbox_get_chat_contacts(mailbox->state, chat_id)
-  );
-}
+//NAN_METHOD(mrmailbox_get_chat_contacts) {
+//  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+//  ASSERT_UINT(info[1], chat_id);
+//  info.GetReturnValue().Set(
+//    mrmailbox_get_chat_contacts(mailbox->state, chat_id)
+//  );
+//}
 
-NAN_METHOD(mrmailbox_get_fresh_msgs) {
-  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
-  info.GetReturnValue().Set(
-    mrmailbox_get_fresh_msgs(mailbox->state)
-  );
-}
+//NAN_METHOD(mrmailbox_get_fresh_msgs) {
+//  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+//  mrmailbox_get_fresh_msgs(mailbox->state)
+//}
 
-NAN_METHOD(mrmailbox_search_msgs) {
-  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
-  ASSERT_UINT(info[1], chat_id);
-  v8::String::Utf8Value query(info[2]);
-  info.GetReturnValue().Set(
-    mrmailbox_search_msgs(mailbox->state, chat_id, *query)
-  );
-}
+//NAN_METHOD(mrmailbox_search_msgs) {
+//  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+//  ASSERT_UINT(info[1], chat_id);
+//  v8::String::Utf8Value query(info[2]);
+//  mrmailbox_search_msgs(mailbox->state, chat_id, *query)
+//}
 
 NAN_METHOD(mrmailbox_set_draft) {
   ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
@@ -440,20 +436,20 @@ NAN_METHOD(mrmailbox_add_address_book) {
   );
 }
 
-NAN_METHOD(mrmailbox_get_known_contacts) {
-  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
-  v8::String::Utf8Value query(info[1]);
-  info.GetReturnValue().Set(
-    mrmailbox_get_known_contacts(mailbox->state, *query)
-  );
-}
+//NAN_METHOD(mrmailbox_get_known_contacts) {
+//  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+//  v8::String::Utf8Value query(info[1]);
+//  info.GetReturnValue().Set(
+//    mrmailbox_get_known_contacts(mailbox->state, *query)
+//  );
+//}
 
-NAN_METHOD(mrmailbox_get_blocked_contacts) {
-  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
-  info.GetReturnValue().Set(
-    mrmailbox_get_blocked_contacts(mailbox->state)
-  );
-}
+//NAN_METHOD(mrmailbox_get_blocked_contacts) {
+//  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+//  info.GetReturnValue().Set(
+//    mrmailbox_get_blocked_contacts(mailbox->state)
+//  );
+//}
 
 NAN_METHOD(mrmailbox_get_blocked_count) {
   ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
@@ -462,13 +458,13 @@ NAN_METHOD(mrmailbox_get_blocked_count) {
   );
 }
 
-NAN_METHOD(mrmailbox_get_contact) {
-  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
-  ASSERT_UINT(info[1], contact_id);
-  info.GetReturnValue().Set(
-    mrmailbox_get_contact(mailbox->state, contact_id)
-  );
-}
+//NAN_METHOD(mrmailbox_get_contact) {
+//  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+//  ASSERT_UINT(info[1], contact_id);
+//  info.GetReturnValue().Set(
+//    mrmailbox_get_contact(mailbox->state, contact_id)
+//  );
+//}
 
 NAN_METHOD(mrmailbox_marknoticed_contact) {
   ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
@@ -601,17 +597,17 @@ NAN_MODULE_INIT(InitAll) {
   EXPORT_FUNCTION(mrmailbox_send_audio_msg);
   EXPORT_FUNCTION(mrmailbox_send_file_msg);
   EXPORT_FUNCTION(mrmailbox_send_vcard_msg);
-  EXPORT_FUNCTION(mrmailbox_get_chat_msgs);
-  EXPORT_FUNCTION(mrmailbox_get_chatlist);
-  EXPORT_FUNCTION(mrmailbox_get_chat);
-  EXPORT_FUNCTION(mrmailbox_get_msg);
+  //EXPORT_FUNCTION(mrmailbox_get_chat_msgs);
+  //EXPORT_FUNCTION(mrmailbox_get_chatlist);
+  //EXPORT_FUNCTION(mrmailbox_get_chat);
+  //EXPORT_FUNCTION(mrmailbox_get_msg);
   EXPORT_FUNCTION(mrmailbox_marknoticed_chat);
   EXPORT_FUNCTION(mrmailbox_get_chat_id_by_contact_id);
-  EXPORT_FUNCTION(mrmailbox_get_chat_media);
+  //EXPORT_FUNCTION(mrmailbox_get_chat_media);
   EXPORT_FUNCTION(mrmailbox_get_next_media);
-  EXPORT_FUNCTION(mrmailbox_get_chat_contacts);
-  EXPORT_FUNCTION(mrmailbox_get_fresh_msgs);
-  EXPORT_FUNCTION(mrmailbox_search_msgs);
+  //EXPORT_FUNCTION(mrmailbox_get_chat_contacts);
+  //EXPORT_FUNCTION(mrmailbox_get_fresh_msgs);
+  //EXPORT_FUNCTION(mrmailbox_search_msgs);
   EXPORT_FUNCTION(mrmailbox_set_draft);
   EXPORT_FUNCTION(mrmailbox_get_total_msg_count);
   EXPORT_FUNCTION(mrmailbox_get_fresh_msg_count);
@@ -625,10 +621,10 @@ NAN_MODULE_INIT(InitAll) {
   EXPORT_FUNCTION(mrmailbox_remove_contact_from_chat);
   EXPORT_FUNCTION(mrmailbox_create_contact);
   EXPORT_FUNCTION(mrmailbox_add_address_book);
-  EXPORT_FUNCTION(mrmailbox_get_known_contacts);
-  EXPORT_FUNCTION(mrmailbox_get_blocked_contacts);
+  //EXPORT_FUNCTION(mrmailbox_get_known_contacts);
+  //EXPORT_FUNCTION(mrmailbox_get_blocked_contacts);
   EXPORT_FUNCTION(mrmailbox_get_blocked_count);
-  EXPORT_FUNCTION(mrmailbox_get_contact);
+  //EXPORT_FUNCTION(mrmailbox_get_contact);
   EXPORT_FUNCTION(mrmailbox_block_contact);
   EXPORT_FUNCTION(mrmailbox_get_contact_encrinfo);
   EXPORT_FUNCTION(mrmailbox_delete_contact);
