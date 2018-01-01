@@ -473,64 +473,63 @@ NAN_METHOD(mrmailbox_get_contact) {
 NAN_METHOD(mrmailbox_marknoticed_contact) {
   ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
   ASSERT_UINT(info[1], contact_id);
-  mrmailbox_marknoticed_contact(mailbox->state, contact_id)
+  mrmailbox_marknoticed_contact(mailbox->state, contact_id);
 }
 
 NAN_METHOD(mrmailbox_block_contact) {
   ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
   ASSERT_UINT(info[1], contact_id);
-  mrmailbox_block_contact(mailbox->state, contact_id)
+  ASSERT_UINT(info[2], new_blocking);
+  mrmailbox_block_contact(mailbox->state, contact_id, new_blocking);
 }
 
 NAN_METHOD(mrmailbox_get_contact_encrinfo) {
   ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
   ASSERT_UINT(info[1], contact_id);
-  const char* encrinfo = mrmailbox_get_contact_encrinfo(mailbox->state, contact_id)
-  info.GetReturnValue().Set(Nan::New<v8::String>(encrinfo))
+  const char* encrinfo = mrmailbox_get_contact_encrinfo(mailbox->state, contact_id);
+  info.GetReturnValue().Set(Nan::New<v8::String>(encrinfo).ToLocalChecked());
 }
 
 NAN_METHOD(mrmailbox_delete_contact) {
   ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
   ASSERT_UINT(info[1], contact_id);
-  info.GetReturnValue().Set(Nan::New<v8::Number>(mrmailbox_delete_contact(mailbox->state, contact_id)))
+  info.GetReturnValue().Set(Nan::New<v8::Number>(mrmailbox_delete_contact(mailbox->state, contact_id)));
 }
 
 NAN_METHOD(mrmailbox_get_msg_info) {
   ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
   ASSERT_UINT(info[1], msg_id);
-  info.GetReturnValue().Set(Nan::New<v8::String>(mrmailbox_get_msg_info(mailbox->state, msg_id)))
+  info.GetReturnValue().Set(Nan::New<v8::String>(mrmailbox_get_msg_info(mailbox->state, msg_id)).ToLocalChecked());
 }
 
 NAN_METHOD(mrmailbox_forward_msgs) {
   ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
-  ASSERT_UINT(info[1], msg_ids);
+  const uint32_t msg_ids = Nan::To<uint32_t>(info[1]).FromJust();
   ASSERT_UINT(info[2], msg_cnt);
   ASSERT_UINT(info[3], chat_id);
-  mrmailbox_forward_msgs(mailbox->state, *msg_ids, msg_cnt, chat_id)
+  mrmailbox_forward_msgs(mailbox->state, &msg_ids, msg_cnt, chat_id);
 }
 
 NAN_METHOD(mrmailbox_star_msgs) {
   ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
-  ASSERT_UINT(info[1], msg_ids);
+  const uint32_t msg_ids = Nan::To<uint32_t>(info[1]).FromJust();
   ASSERT_UINT(info[2], msg_cnt);
   ASSERT_UINT(info[3], chat_id);
-  mrmailbox_star_msgs(mailbox->state, *msg_ids, msg_cnt, chat_id)
+  mrmailbox_star_msgs(mailbox->state, &msg_ids, msg_cnt, chat_id);
 }
 
 NAN_METHOD(mrmailbox_delete_msgs) {
   ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
-  ASSERT_UINT(info[1], msg_ids);
+  const uint32_t msg_ids = Nan::To<uint32_t>(info[1]).FromJust();
   ASSERT_UINT(info[2], msg_cnt);
-  ASSERT_UINT(info[3], chat_id);
-  mrmailbox_delete_msgs(mailbox->state, *msg_ids, msg_cnt, chat_id)
+  mrmailbox_delete_msgs(mailbox->state, &msg_ids, msg_cnt);
 }
 
 NAN_METHOD(mrmailbox_markseen_msgs) {
   ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
-  ASSERT_UINT(info[1], msg_ids);
+  const uint32_t msg_ids = Nan::To<uint32_t>(info[1]).FromJust();
   ASSERT_UINT(info[2], msg_cnt);
-  ASSERT_UINT(info[3], chat_id);
-  mrmailbox_markseen_msgs(mailbox->state, *msg_ids, msg_cnt, chat_id)
+  mrmailbox_markseen_msgs(mailbox->state, &msg_ids, msg_cnt);
 }
 
 
