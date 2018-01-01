@@ -70,7 +70,7 @@ NAN_METHOD(mrmailbox_heartbeat) {
 }
 
 NAN_METHOD(mrmailbox_open) {
-  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap)
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
   v8::String::Utf8Value dbfile(info[1]);
   v8::String::Utf8Value blobdir(info[2]);
   info.GetReturnValue().Set(
@@ -84,71 +84,71 @@ NAN_METHOD(mrmailbox_close) {
 }
 
 NAN_METHOD(mrmailbox_is_open) {
-  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap)
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
   info.GetReturnValue().Set(
     Nan::New<v8::Number>(mrmailbox_is_open(mailbox->state))
   );
 }
 
 NAN_METHOD(mrmailbox_configure_and_connect) {
-  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap)
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
   info.GetReturnValue().Set(
     Nan::New<v8::Number>(mrmailbox_configure_and_connect(mailbox->state))
-  )
+  );
 }
 
 NAN_METHOD(mrmailbox_is_configured) {
-  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap)
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
   info.GetReturnValue().Set(
     Nan::New<v8::Number>(mrmailbox_is_configured(mailbox->state))
-  )
+  );
 }
 
 NAN_METHOD(mrmailbox_stop_ongoing_process) {
-  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap)
-  mrmailbox_stop_ongoing_process(mailbox->state)
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  mrmailbox_stop_ongoing_process(mailbox->state);
 }
 
 NAN_METHOD(mrmailbox_initiate_key_transfer) {
   ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap)
   info.GetReturnValue().Set(
-    Nan::New<v8::String>(mrmailbox_initiate_key_transfer(mailbox->state))
-  )
+    Nan::New<v8::String>(mrmailbox_initiate_key_transfer(mailbox->state)).ToLocalChecked()
+  );
 }
 
 NAN_METHOD(mrmailbox_continue_key_transfer) {
-  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap)
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
   ASSERT_UINT(info[1], msg_id);
   v8::String::Utf8Value setup_code(info[2]);
   info.GetReturnValue().Set(
     Nan::New<v8::Number>(mrmailbox_continue_key_transfer(mailbox->state, msg_id, *setup_code))
-  )
+  );
 }
 
 NAN_METHOD(mrmailbox_imex) {
-  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap)
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
   ASSERT_UINT(info[1], what);
   v8::String::Utf8Value param_one(info[2]);
   v8::String::Utf8Value param_two(info[3]);
   info.GetReturnValue().Set(
     Nan::New<v8::Number>(mrmailbox_imex(mailbox->state, what, *param_one, *param_two))
-  )
+  );
 }
 
 NAN_METHOD(mrmailbox_imex_has_backup) {
-  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap)
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
   v8::String::Utf8Value dir_name(info[1]);
   info.GetReturnValue().Set(
-    Nan::New<v8::String>(mrmailbox_imex_has_backup(mailbox->state, *dir_name))
-  )
+    Nan::New<v8::String>(mrmailbox_imex_has_backup(mailbox->state, *dir_name)).ToLocalChecked()
+  );
 }
 
 NAN_METHOD(mrmailbox_check_password) {
-  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap)
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
   v8::String::Utf8Value test_pw(info[1]);
   info.GetReturnValue().Set(
     Nan::New<v8::Number>(mrmailbox_check_password(mailbox->state, *test_pw))
-  )
+  );
 }
 
 NAN_METHOD(mrmailbox_create_contact) {
@@ -319,7 +319,7 @@ NAN_METHOD(mrmailbox_send_image_msg) {
   ASSERT_UINT(info[4], width);
   ASSERT_UINT(info[5], height);
   info.GetReturnValue().Set(
-    Nan::New<v8::Number>(mrmailbox_send_text_msg(mailbox->state, chat_id, *file, *filemime, width, height))
+    Nan::New<v8::Number>(mrmailbox_send_image_msg(mailbox->state, chat_id, *file, *filemime, width, height))
   );
 }
 
@@ -392,7 +392,7 @@ NAN_METHOD(mrmailbox_set_chat_name) {
   ASSERT_UINT(info[1], chat_id);
   v8::String::Utf8Value new_name(info[2]);
   info.GetReturnValue().Set(
-    Nan::New<v8::Number>(mrmailbox_create_group_chat(mailbox->state, chat_id, *new_name))
+    Nan::New<v8::Number>(mrmailbox_set_chat_name(mailbox->state, chat_id, *new_name))
   );
 }
 
@@ -401,7 +401,7 @@ NAN_METHOD(mrmailbox_set_chat_profile_image) {
   ASSERT_UINT(info[1], chat_id);
   v8::String::Utf8Value new_image(info[2]);
   info.GetReturnValue().Set(
-    Nan::New<v8::Number>(mrmailbox_create_group_chat(mailbox->state, chat_id, *new_image))
+    Nan::New<v8::Number>(mrmailbox_set_chat_profile_image(mailbox->state, chat_id, *new_image))
   );
 }
 
@@ -410,7 +410,7 @@ NAN_METHOD(mrmailbox_is_contact_in_chat) {
   ASSERT_UINT(info[1], chat_id);
   ASSERT_UINT(info[2], contact_id);
   info.GetReturnValue().Set(
-    Nan::New<v8::Number>(mrmailbox_create_group_chat(mailbox->state, chat_id, contact_id))
+    Nan::New<v8::Number>(mrmailbox_is_contact_in_chat(mailbox->state, chat_id, contact_id))
   );
 }
 
