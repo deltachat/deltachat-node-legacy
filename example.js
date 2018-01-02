@@ -7,9 +7,21 @@ function cb () {
   console.log('called back', arguments)
 }
 
+console.log('Delta.Chat Version ' + deltachat.mrmailbox_get_version_str())
+
 var mailbox = deltachat.mrmailbox_new(cb, null, null)
+deltachat.mrmailbox_set_config(mailbox, 'addr', 'karissa.mckelvey@gmail.com')
+deltachat.mrmailbox_set_config(mailbox, 'mail_pw', 'c0wl3v3l')
 
-deltachat.mrmailbox_set_config(mailbox, 'addr', argv.email)
-deltachat.mrmailbox_set_config(mailbox, 'mail_pw', argv.mail_pw)
+var connected = deltachat.mrmailbox_configure_and_connect(mailbox)
+console.log('connected?', connected)
 
-deltachat.mrmailbox_configure_and_connect()
+var contact_id = deltachat.mrmailbox_create_contact(mailbox, null, "okdistribute@riseup.net"); 
+var chat_id = deltachat.mrmailbox_create_chat_by_contact_id(mailbox, contact_id);
+
+setTimeout(function () {
+  var connected = deltachat.mrmailbox_is_configured(mailbox)
+  console.log('connected?', connected)
+  deltachat.mrmailbox_send_text_msg(mailbox, chat_id, "Hi, here is my first message!");
+}, 14000)
+
