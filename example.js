@@ -10,8 +10,8 @@ function cb () {
 console.log('Delta.Chat Version ' + deltachat.mrmailbox_get_version_str())
 
 var mailbox = deltachat.mrmailbox_new(cb, null, null)
-deltachat.mrmailbox_set_config(mailbox, 'addr', 'karissa.mckelvey@gmail.com')
-deltachat.mrmailbox_set_config(mailbox, 'mail_pw', 'c0wl3v3l')
+deltachat.mrmailbox_set_config(mailbox, 'addr', argv.email)
+deltachat.mrmailbox_set_config(mailbox, 'mail_pw', argv.password)
 
 var connected = deltachat.mrmailbox_configure_and_connect(mailbox)
 console.log('connected?', connected)

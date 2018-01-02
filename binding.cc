@@ -178,15 +178,17 @@ NAN_METHOD(mrmailbox_send_text_msg) {
   );
 }
 
-//NAN_METHOD(mrmailbox_get_chat_msgs) {
-//  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
-//  ASSERT_UINT(info[1], chat_id);
-//  ASSERT_UINT(info[2], flags);
-//  ASSERT_UINT(info[3], markerbefore);
-//  info.GetReturnValue().Set(
-//    mrmailbox_get_chat_msgs(mailbox->state, chat_id, flags, markerbefore)
-//  );
-//}
+NAN_METHOD(mrmailbox_get_chat_msgs) {
+  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  ASSERT_UINT(info[1], chat_id);
+  ASSERT_UINT(info[2], flags);
+  ASSERT_UINT(info[3], markerbefore);
+  mrarray_t *msglist = mrmailbox_get_chat_msgs(mailbox->state, chat_id, flags, markerbefore);
+  MrArrayWrap *mrarray = new MrArrayWrap();
+  mrarray->state = msglist;
+  
+  info.GetReturnValue().Set(mrarray->handle());
+}
 
 //NAN_METHOD(mrmailbox_get_msg) {
 //  ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
@@ -597,7 +599,7 @@ NAN_MODULE_INIT(InitAll) {
   EXPORT_FUNCTION(mrmailbox_send_audio_msg);
   EXPORT_FUNCTION(mrmailbox_send_file_msg);
   EXPORT_FUNCTION(mrmailbox_send_vcard_msg);
-  //EXPORT_FUNCTION(mrmailbox_get_chat_msgs);
+  EXPORT_FUNCTION(mrmailbox_get_chat_msgs);
   //EXPORT_FUNCTION(mrmailbox_get_chatlist);
   //EXPORT_FUNCTION(mrmailbox_get_chat);
   //EXPORT_FUNCTION(mrmailbox_get_msg);

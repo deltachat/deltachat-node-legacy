@@ -34,6 +34,7 @@ v8::Local<v8::Value> MrMailboxWrap::NewInstance () {
   instance = Nan::NewInstance(constructorHandle->GetFunction()).ToLocalChecked();
 
   MrMailboxWrap *self = Nan::ObjectWrap::Unwrap<MrMailboxWrap>(instance);
+
   self->state = mrmailbox_new(my_delta_handler, NULL, NULL);
 
   return scope.Escape(instance);
