@@ -1,6 +1,7 @@
 #include <mrmailbox.h>
 #include "src/macros.h"
 #include "src/mrmailbox_wrap.h"
+#include "src/mrmailbox_worker.cc"
 #include "src/mrarray_wrap.h"
 #include "src/mrmsg_wrap.h"
 
@@ -9,7 +10,9 @@
  **/
 
 NAN_METHOD(mrmailbox_new) {
-  info.GetReturnValue().Set(MrMailboxWrap::NewInstance());
+  Nan::Callback *callback = new Nan::Callback(Nan::To<v8::Function>(info[0]).ToLocalChecked());
+
+  info.GetReturnValue().Set(MrMailboxWrap::NewInstance(callback));
 }
 
 NAN_METHOD(mrmailbox_set_config) {
@@ -186,7 +189,6 @@ NAN_METHOD(mrmailbox_get_chat_msgs) {
   mrarray_t *msglist = mrmailbox_get_chat_msgs(mailbox->state, chat_id, flags, markerbefore);
   MrArrayWrap *mrarray = new MrArrayWrap();
   mrarray->state = msglist;
-  
   info.GetReturnValue().Set(mrarray->handle());
 }
 
