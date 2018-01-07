@@ -1,7 +1,7 @@
 #include <mrmailbox.h>
+#include <iostream>
 #include "src/macros.h"
 #include "src/mrmailbox_wrap.h"
-#include "src/mrmailbox_worker.cc"
 #include "src/mrarray_wrap.h"
 #include "src/mrmsg_wrap.h"
 
@@ -9,10 +9,30 @@
  * mrmailbox
  **/
 
-NAN_METHOD(mrmailbox_new) {
-  Nan::Callback *callback = new Nan::Callback(Nan::To<v8::Function>(info[0]).ToLocalChecked());
+uv_async_t async; 
+Nan::Callback *cbPeriodic;
 
-  info.GetReturnValue().Set(MrMailboxWrap::NewInstance(callback));
+void asyncmsg(uv_async_t* handle) {
+  std::cout << "async\n";
+  Nan::HandleScope scope;
+  v8::Isolate* isolate = v8::Isolate::GetCurrent();
+  v8::Local<v8::Value> argv[] = { v8::String::NewFromUtf8(isolate, "Hello world") };
+  cbPeriodic->Call(1, argv);
+}
+
+uintptr_t my_delta_handler(mrmailbox_t* mailbox, int event, uintptr_t data1, uintptr_t data2)
+{
+    std::cout << "handler\n";
+    uv_async_send(&async);
+    std::cout << "sent\n";
+    return 0; 
+}
+
+NAN_METHOD(mrmailbox_new) {
+  cbPeriodic = new Nan::Callback(info[0].As<v8::Function>());
+  uv_loop_t* loop = uv_default_loop();
+  uv_async_init(loop, &async, asyncmsg);
+  info.GetReturnValue().Set(MrMailboxWrap::NewInstance(my_delta_handler));
 }
 
 NAN_METHOD(mrmailbox_set_config) {

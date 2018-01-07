@@ -9,7 +9,7 @@ public:
   mrmailbox_t* state;
 
   static void Init ();
-  static v8::Local<v8::Value> NewInstance (Nan::Callback *callback);
+  static v8::Local<v8::Value> NewInstance (mrmailboxcb_t);
   MrMailboxWrap ();
   ~MrMailboxWrap ();
 

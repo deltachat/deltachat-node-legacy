@@ -1,7 +1,5 @@
 #include "mrmailbox_wrap.h"
-#include "mrmailbox_worker.cc"
 #include "macros.h"
-#include "cify.cc"
 
 Nan::Persistent<v8::FunctionTemplate> MrMailboxWrap::constructor;
 
@@ -22,7 +20,7 @@ void MrMailboxWrap::Init () {
   tpl->InstanceTemplate()->SetInternalFieldCount(1);
 }
 
-v8::Local<v8::Value> MrMailboxWrap::NewInstance (Nan::Callback *callback) {
+v8::Local<v8::Value> MrMailboxWrap::NewInstance (mrmailboxcb_t function) {
   Nan::EscapableHandleScope scope;
 
   v8::Local<v8::Object> instance;
@@ -31,12 +29,8 @@ v8::Local<v8::Value> MrMailboxWrap::NewInstance (Nan::Callback *callback) {
   instance = Nan::NewInstance(constructorHandle->GetFunction()).ToLocalChecked();
 
   MrMailboxWrap *wrap = Nan::ObjectWrap::Unwrap<MrMailboxWrap>(instance);
-  auto const delta_handler = cify<uintptr_t(*)(mrmailbox_t*, int, uintptr_t, uintptr_t)>([&](mrmailbox_t* mailbox, int event, uintptr_t data1, uintptr_t data2) -> uintptr_t {
-    printf("got event %d %s %s\n", event, data1, data2);
-    Nan::AsyncQueueWorker(new MailboxWorker(callback, mailbox, event, data1, data2));
-    return 0;
-  });
-  wrap->state = mrmailbox_new(delta_handler, NULL, NULL);
+  
+  wrap->state = mrmailbox_new(function, NULL, NULL);
 
   return scope.Escape(instance);
 }
