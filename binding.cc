@@ -22,7 +22,7 @@ void asyncmsg(uv_async_t* handle) {
 
 uintptr_t my_delta_handler(mrmailbox_t* mailbox, int event, uintptr_t data1, uintptr_t data2)
 {
-  std::cout << "handler\n";
+  printf("%d %s\n", (int)event, (char*)data2);
   uv_async_send(&async);
   std::cout << "sent\n";
   return 0; 
