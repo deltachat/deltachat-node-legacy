@@ -22,10 +22,10 @@ void asyncmsg(uv_async_t* handle) {
 
 uintptr_t my_delta_handler(mrmailbox_t* mailbox, int event, uintptr_t data1, uintptr_t data2)
 {
-    std::cout << "handler\n";
-    uv_async_send(&async);
-    std::cout << "sent\n";
-    return 0; 
+  std::cout << "handler\n";
+  uv_async_send(&async);
+  std::cout << "sent\n";
+  return 0; 
 }
 
 NAN_METHOD(mrmailbox_new) {
@@ -222,6 +222,7 @@ NAN_METHOD(mrmailbox_get_chat_msgs) {
 
 NAN_METHOD(mrmailbox_unref) {
   ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
+  uv_close((uv_handle_t*) &async, NULL);
   mrmailbox_unref(mailbox->state);
 }
 
