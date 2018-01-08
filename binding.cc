@@ -12,19 +12,36 @@
 uv_async_t async; 
 Nan::Callback *cbPeriodic;
 
+struct delta_data {
+  int event;
+  uintptr_t data1;
+  uintptr_t data2;
+}; 
+
 void asyncmsg(uv_async_t* handle) {
   std::cout << "async\n";
   Nan::HandleScope scope;
   v8::Isolate* isolate = v8::Isolate::GetCurrent();
-  v8::Local<v8::Value> argv[] = { v8::String::NewFromUtf8(isolate, "Hello world") };
+  printf("got %d\n", *((int*)handle->data));
+  v8::Local<v8::Value> argv[] = { 
+    v8::Number::New(isolate, *((int*)handle->data))
+    //v8::String::NewFromUtf8(isolate, data->data1),
+    //v8::String::NewFromUtf8(isolate, data->data2) 
+  };
   cbPeriodic->Call(1, argv);
 }
 
 uintptr_t my_delta_handler(mrmailbox_t* mailbox, int event, uintptr_t data1, uintptr_t data2)
 {
-  printf("%d %s\n", (int)event, (char*)data2);
+  //delta_data local;
+  //local.event = event;
+  //local.data1 = data1;
+  //local.data2 = data2;
+  void *ptr = malloc(sizeof(int));
+  *((int*)ptr) = event;
+  async.data = ptr;
   uv_async_send(&async);
-  std::cout << "sent\n";
+  printf("sent %d\n", event);
   return 0; 
 }
 
