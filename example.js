@@ -25,17 +25,19 @@ while (true) {
 
 deltachat.mrmailbox_set_config(mailbox, 'addr', argv.email)
 deltachat.mrmailbox_set_config(mailbox, 'mail_pw', argv.password)
-console.log('number', deltachat.MR_GCL_ARCHIVED_ONLY)
+console.log('MR_GCL_ARCHIVED_ONLY', deltachat.MR_GCL_ARCHIVED_ONLY)
 //var msglist = deltachat.mrmailbox_get_chatlist(mailbox, deltachat.MR_GCL_ARCHIVED_ONLY, null)
 //console.log('got chatlist', msglist)
 var connected = deltachat.mrmailbox_configure_and_connect(mailbox)
 console.log('connected?', connected)
-var contact_id = deltachat.mrmailbox_create_contact(mailbox, null, "okdistribute@riseup.net");
+var contact_id = deltachat.mrmailbox_create_contact(mailbox, 'Karissa', "okdistribute@riseup.net");
 var contact = deltachat.mrmailbox_get_contact(mailbox, contact_id)
-var addr = deltachat.mrcontact_get_addr(contact)
-console.log('contact', contact, addr)
+var info = deltachat.mrcontact_get_name_n_addr(contact)
+console.log('contact', contact, info)
 var chat_id = deltachat.mrmailbox_create_chat_by_contact_id(mailbox, contact_id);
+console.log('created chat with id:', chat_id)
 var msglist = deltachat.mrmailbox_get_chat_msgs(mailbox, chat_id, 0, 0)
+console.log('has', deltachat.mrarray_get_cnt(msglist), 'chats')
 
 setTimeout(function () {
   var connected = deltachat.mrmailbox_configure_and_connect(mailbox)
