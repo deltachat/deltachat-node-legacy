@@ -15,9 +15,11 @@ if (!argv.email || !argv.password) {
 console.log('Logging in with', argv.email, argv.password)
 
 var mailbox = new deltachat.mrmailbox_new(cb, null, null)
-deltachat.mrmailbox_open(mailbox)
+var ret = deltachat.mrmailbox_open(mailbox)
+console.log('opening mailbox, returned:', ret)
 while (true) {
-  if (deltachat.mrmailbox_is_open) break;
+  if (deltachat.mrmailbox_is_open(mailbox)) break;
+  console.log('mailbox is closed')
   setTimeout(function () {}, 1000);
 }
 
