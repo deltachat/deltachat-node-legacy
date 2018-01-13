@@ -20,7 +20,7 @@ void MrArrayWrap::Init () {
   tpl->InstanceTemplate()->SetInternalFieldCount(1);
 }
 
-v8::Local<v8::Value> MrArrayWrap::NewInstance () {
+v8::Local<v8::Value> MrArrayWrap::NewInstance (mrarray_t *mrarray) {
   Nan::EscapableHandleScope scope;
 
   v8::Local<v8::Object> instance;
@@ -29,6 +29,7 @@ v8::Local<v8::Value> MrArrayWrap::NewInstance () {
   instance = Nan::NewInstance(constructorHandle->GetFunction()).ToLocalChecked();
 
   MrArrayWrap *self = Nan::ObjectWrap::Unwrap<MrArrayWrap>(instance);
+  self->state = mrarray;
 
   return scope.Escape(instance);
 }

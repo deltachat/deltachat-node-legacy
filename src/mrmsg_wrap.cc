@@ -20,7 +20,7 @@ void MrMsgWrap::Init () {
   tpl->InstanceTemplate()->SetInternalFieldCount(1);
 }
 
-v8::Local<v8::Value> MrMsgWrap::NewInstance () {
+v8::Local<v8::Value> MrMsgWrap::NewInstance (mrmsg_t *mrmsg) {
   Nan::EscapableHandleScope scope;
 
   v8::Local<v8::Object> instance;
@@ -29,7 +29,7 @@ v8::Local<v8::Value> MrMsgWrap::NewInstance () {
   instance = Nan::NewInstance(constructorHandle->GetFunction()).ToLocalChecked();
 
   MrMsgWrap *self = Nan::ObjectWrap::Unwrap<MrMsgWrap>(instance);
-  self->state = mrmsg_new();
+  self->state = mrmsg;
 
   return scope.Escape(instance);
 }

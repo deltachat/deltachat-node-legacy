@@ -1,4 +1,4 @@
-#ifndef DELTACHAT_MACROS_H 
+#ifndef DELTACHAT_MACROS_H
 #define DELTACHAT_MACROS_H
 
 #include <errno.h>

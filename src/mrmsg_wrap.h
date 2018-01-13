@@ -9,7 +9,7 @@ public:
   mrmsg_t* state;
 
   static void Init ();
-  static v8::Local<v8::Value> NewInstance ();
+  static v8::Local<v8::Value> NewInstance (mrmsg_t*);
   MrMsgWrap ();
   ~MrMsgWrap ();
 

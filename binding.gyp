@@ -2,11 +2,14 @@
   "targets": [
     {
       "target_name": "deltachat",
-      "sources": [ 
+      "sources": [
         "binding.cc",
         "src/mrmailbox_wrap.cc",
         "src/mrarray_wrap.cc",
-        "src/mrmsg_wrap.cc"
+        "src/mrmsg_wrap.cc",
+        "src/mrchat_wrap.cc",
+        "src/mrcontact_wrap.cc",
+        "src/mrchatlist_wrap.cc"
       ],
       "libraries": [
         "../deltachat-core/builddir/src/libdeltachat.dylib"
