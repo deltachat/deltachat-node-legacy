@@ -1,4 +1,5 @@
 #include <mrmailbox.h>
+#include <array>
 #include <iostream>
 #include "src/macros.h"
 #include "src/mrmailbox_wrap.h"
@@ -13,42 +14,75 @@
  * mrmailbox
  **/
 
-uv_async_t async;
-Nan::Callback *cbPeriodic;
-
 struct delta_data {
   int event;
   uintptr_t data1;
   uintptr_t data2;
 };
 
+uv_async_t async;
+Nan::Callback *cbPeriodic;
+
 void asyncmsg(uv_async_t* handle) {
+  delta_data *data = ((delta_data*)handle->data);
   std::cout << "async\n";
   Nan::HandleScope scope;
   v8::Isolate* isolate = v8::Isolate::GetCurrent();
-  delta_data *data = ((delta_data*)handle->data);
-  printf("got %d %s %s\n", data->event, data->data1, data->data2);
-  v8::Local<v8::Value> argv[] = {
-    v8::Number::New(isolate, data->event),
-    //Nan::New<v8::String>(data->data1).ToLocalChecked()
-    //Nan::New<v8::String>(data->data2).ToLocalChecked()
-  };
-  cbPeriodic->Call(1, argv);
+
+  v8::Local<v8::Value> argv[] = {};
+  printf("switching event %d\n", data->event);
+
+  std::cout << "Put event in\n";
+  argv[0] = LOCAL_NUMBER(data->event);
+
+  std::cout << "initialize local string\n";
+  v8::Local<v8::Value> ZERO = LOCAL_NUMBER(0);
+  std::cout << "Initialize ZERO\n";
+  switch (data->event) {
+    case 100: 
+    case 200:
+    case 300:
+    case 400:
+      std::cout << "Initialize ZERO\n";
+      argv[1] = ZERO;
+      argv[2] = LOCAL_STRING((char*)data->data2);
+      break;
+    case 2000:
+    case 2005:
+    case 2010:
+    case 2015:
+    case 2020:
+    case 2041:
+    case 2091:
+    case 2110:
+      argv[1] = LOCAL_NUMBER(data->data1);
+      argv[2] = LOCAL_NUMBER(data->data2);
+      break;
+    case 2030:
+    case 2052:
+    case 2100:
+      argv[1] = LOCAL_STRING((char*)data->data1);
+      argv[2] = ZERO;
+      break;
+    default:
+      argv[1] = ZERO;
+      argv[2] = ZERO;
+      break;
+  }
+  std::cout << "Sending vector data\n";
+  cbPeriodic->Call(3, argv);
 }
+
 
 uintptr_t my_delta_handler(mrmailbox_t* mailbox, int event, uintptr_t data1, uintptr_t data2)
 {
-  //delta_data local;
-  //local.event = event;
-  //local.data1 = data1;
-  //local.data2 = data2;
   void *ptr = malloc(sizeof(delta_data));
   ((delta_data*)ptr)->event = event;
   ((delta_data*)ptr)->data1 = data1;
   ((delta_data*)ptr)->data2 = data2;
   async.data = ptr;
   uv_async_send(&async);
-  printf("sent %d\n", event);
+  printf("got event %d\n", event);
   return 0;
 }
 
