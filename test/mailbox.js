@@ -1,29 +1,22 @@
 var test = require('tape')
-var deltachat = require('bindings')('deltachat')
+var deltachat = require('..')
 
 var mailbox
 
-test('make mailbox', function (t) {
-  function cb () {
-    console.log('called back', arguments)
+test('make and unref mailbox', function (t) {
+  function cb (event, data1, data2) {
+    t.ok(event)
   }
 
   mailbox = deltachat.mrmailbox_new(cb, null, null)
+  t.same(1, deltachat.mrmailbox_open(mailbox), 'open mailbox')
+  t.same(1, deltachat.mrmailbox_is_open(mailbox), 'mailbox is open')
+  deltachat.mrmailbox_unref(mailbox)
   t.end()
 })
 
-test('configure mailbox', function (t) {
-  deltachat.mrmailbox_set_config(mailbox, "addr", process.env.DELTACHAT_ADDR); 
-  deltachat.mrmailbox_set_config(mailbox, "mail_pw", process.env.DELTACHAT_PW);
-
-  deltachat.mrmailbox_configure_and_connect(mailbox);
-  t.end()
-})
-
-test('send test message', function (t) {
-  var contact_id = deltachat.mrmailbox_create_contact(mailbox, NULL, process.env.DELTACHAT_TEST_RECIPIENT); 
-  var chat_id    = deltachat.mrmailbox_create_chat_by_contact_id(mailbox, contact_id);
-
-  deltachat.mrmailbox_send_text_msg(mailbox, chat_id, "Hi, here is my first message!");
+test('deltachat version', function (t) {
+  var version = deltachat.mrmailbox_get_version_str()
+  t.same(version, '0.11.1', 'got version number')
   t.end()
 })

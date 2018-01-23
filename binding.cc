@@ -39,11 +39,10 @@ void asyncmsg(uv_async_t* handle) {
   v8::Local<v8::Value> ZERO = LOCAL_NUMBER(0);
   std::cout << "Initialize ZERO\n";
   switch (data->event) {
-    case 100: 
+    case 100:
     case 200:
     case 300:
     case 400:
-      std::cout << "Initialize ZERO\n";
       argv[1] = ZERO;
       argv[2] = LOCAL_STRING((char*)data->data2);
       break;
@@ -111,8 +110,7 @@ NAN_METHOD(mrmailbox_get_config) {
   ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
   v8::String::Utf8Value key(info[1]);
   v8::String::Utf8Value def(info[2]);
-  const char *ret = mrmailbox_get_config(mailbox->state, *key, *def);
-  info.GetReturnValue().Set(*ret);
+  info.GetReturnValue().Set(Nan::New<v8::String>(mrmailbox_get_config(mailbox->state, *key, *def)).ToLocalChecked());
 }
 
 NAN_METHOD(mrmailbox_get_config_int) {
@@ -126,13 +124,11 @@ NAN_METHOD(mrmailbox_get_config_int) {
 
 NAN_METHOD(mrmailbox_get_info) {
   ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
-  const char *ret = mrmailbox_get_info(mailbox->state);
-  info.GetReturnValue().Set(*ret);
+  info.GetReturnValue().Set(Nan::New<v8::String>(mrmailbox_get_info(mailbox->state)).ToLocalChecked());
 }
 
 NAN_METHOD(mrmailbox_get_version_str) {
-  const char *ret = mrmailbox_get_version_str();
-  info.GetReturnValue().Set(*ret);
+  info.GetReturnValue().Set(Nan::New<v8::String>(mrmailbox_get_version_str()).ToLocalChecked());
 }
 
 NAN_METHOD(mrmailbox_connect) {
@@ -566,8 +562,7 @@ NAN_METHOD(mrmailbox_block_contact) {
 NAN_METHOD(mrmailbox_get_contact_encrinfo) {
   ASSERT_UNWRAP(info[0], mailbox, MrMailboxWrap);
   ASSERT_UINT(info[1], contact_id);
-  const char* encrinfo = mrmailbox_get_contact_encrinfo(mailbox->state, contact_id);
-  info.GetReturnValue().Set(Nan::New<v8::String>(encrinfo).ToLocalChecked());
+  info.GetReturnValue().Set(Nan::New<v8::String>(mrmailbox_get_contact_encrinfo(mailbox->state, contact_id)).ToLocalChecked());
 }
 
 NAN_METHOD(mrmailbox_delete_contact) {
@@ -644,8 +639,7 @@ NAN_METHOD(mrarray_unref) {
 
 NAN_METHOD(mrmsg_get_text) {
   ASSERT_UNWRAP(info[0], msg, MrMsgWrap);
-  const char *text = mrmsg_get_text(msg->state);
-  info.GetReturnValue().Set(Nan::New<v8::String>(text).ToLocalChecked());
+  info.GetReturnValue().Set(Nan::New<v8::String>(mrmsg_get_text(msg->state)).ToLocalChecked());
 }
 
 NAN_METHOD(mrmsg_unref) {
