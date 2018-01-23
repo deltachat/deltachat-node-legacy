@@ -27,7 +27,6 @@ void asyncmsg(uv_async_t* handle) {
   delta_data *data = ((delta_data*)handle->data);
   std::cout << "async\n";
   Nan::HandleScope scope;
-  v8::Isolate* isolate = v8::Isolate::GetCurrent();
 
   v8::Local<v8::Value> argv[] = {};
   printf("switching event %d\n", data->event);
