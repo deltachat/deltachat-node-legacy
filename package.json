@@ -22,11 +22,11 @@
   },
   "homepage": "https://github.com/karissa/deltachat-node#readme",
   "dependencies": {
-    "nan": "^2.8.0",
-    "node-gyp-build": "^3.2.2"
+    "nan": "^2.4.0",
+    "node-gyp-build": "^3.0.0"
   },
   "devDependencies": {
-    "node-gyp": "^3.6.2",
+    "node-gyp": "^3.6.1",
     "tape": "^4.8.0"
   }
 }

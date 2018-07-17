@@ -1,5 +1,5 @@
-#ifndef DELTACHAT_MACROS_H
-#define DELTACHAT_MACROS_H
+#ifndef DELTA_NATIVE_MACROS_H
+#define DELTA_NATIVE_MACROS_H
 
 #include <errno.h>
 #include <string.h>
@@ -8,11 +8,12 @@
 #define STR(x) STR_HELPER(x)
 
 #define CDATA(buf) (unsigned char *) node::Buffer::Data(buf)
-#define CLENGTH(buf) (unsigned long long) node::Buffer::Length(buf)
 #define LOCAL_NUMBER(num) Nan::New<v8::Number>(num)
+#define CLENGTH(buf) (unsigned long long) node::Buffer::Length(buf)
 #define LOCAL_STRING(str) Nan::New<v8::String>(str).ToLocalChecked()
 #define LOCAL_FUNCTION(fn) Nan::GetFunction(Nan::New<v8::FunctionTemplate>(fn)).ToLocalChecked()
 #define EXPORT_NUMBER(name) Nan::Set(target, LOCAL_STRING(#name), Nan::New<v8::Number>(name));
+#define EXPORT_NUMBER_VALUE(name, value) Nan::Set(target, LOCAL_STRING(#name), Nan::New<v8::Number>(value));
 #define EXPORT_STRING(name) Nan::Set(target, LOCAL_STRING(#name), LOCAL_STRING(name));
 #define EXPORT_FUNCTION(name) Nan::Set(target, LOCAL_STRING(#name), LOCAL_FUNCTION(name));
 #define EXPORT_BYTE_TAG_AS_BUFFER(name) \
@@ -46,10 +47,10 @@
   ASSERT_BUFFER(name, var) \
   unsigned long long var##_length = CLENGTH(var);
 
-#define ASSERT_BUFFER_MIN_LENGTH(name, var, length) \
+#define ASSERT_BUFFER_MIN_LENGTH(name, var, length_name, length) \
   ASSERT_BUFFER_SET_LENGTH(name, var) \
   if (length > 0 && var##_length < length) { \
-    Nan::ThrowError(#var " must be a buffer of size " STR(length)); \
+    Nan::ThrowError(#var " must be a buffer of size " #length_name); \
     return; \
   }
 
