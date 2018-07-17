@@ -51,6 +51,31 @@ uintptr_t my_delta_handler(dc_context_t* mailbox, int event, uintptr_t data1, ui
   return 0;
 }
 
+NAN_METHOD(dc_perform_imap_jobs) {
+  ASSERT_UNWRAP(info[0], mailbox, DcContextWrap);
+  dc_perform_imap_jobs(mailbox->state);
+}
+
+NAN_METHOD(dc_perform_imap_fetch) {
+  ASSERT_UNWRAP(info[0], mailbox, DcContextWrap);
+  dc_perform_imap_fetch(mailbox->state);
+}
+
+NAN_METHOD(dc_perform_imap_idle) {
+  ASSERT_UNWRAP(info[0], mailbox, DcContextWrap);
+  dc_perform_imap_idle(mailbox->state);
+}
+
+NAN_METHOD(dc_perform_smtp_jobs) {
+  ASSERT_UNWRAP(info[0], mailbox, DcContextWrap);
+  dc_perform_smtp_jobs(mailbox->state);
+}
+
+NAN_METHOD(dc_perform_smtp_idle) {
+  ASSERT_UNWRAP(info[0], mailbox, DcContextWrap);
+  dc_perform_smtp_idle(mailbox->state);
+}
+
 NAN_METHOD(dc_context_new) {
   cbPeriodic = new Nan::Callback(info[0].As<v8::Function>());
   uv_loop_t* loop = uv_default_loop();
@@ -760,6 +785,12 @@ NAN_MODULE_INIT(InitAll) {
   EXPORT_FUNCTION(dc_imex);
   EXPORT_FUNCTION(dc_imex_has_backup);
   EXPORT_FUNCTION(dc_check_password);
+  EXPORT_FUNCTION(dc_perform_imap_jobs);
+  EXPORT_FUNCTION(dc_perform_imap_fetch);
+  EXPORT_FUNCTION(dc_perform_imap_idle);
+
+  EXPORT_FUNCTION(dc_perform_smtp_idle);
+  EXPORT_FUNCTION(dc_perform_smtp_jobs);
 
   EXPORT_FUNCTION(dc_array_get_cnt);
   EXPORT_FUNCTION(dc_array_get_id);
@@ -784,7 +815,7 @@ NAN_MODULE_INIT(InitAll) {
   EXPORT_FUNCTION(dc_contact_is_blocked);
   EXPORT_FUNCTION(dc_contact_unref);
 
-  // EXPORT_NUMBER(MR_GCL_ARCHIVED_ONLY)
+  EXPORT_NUMBER(DC_GCL_ARCHIVED_ONLY)
 }
 
 NODE_MODULE(deltachat, InitAll);
