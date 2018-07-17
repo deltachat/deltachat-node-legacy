@@ -31,11 +31,11 @@ void asyncmsg(uv_async_t* handle) {
   printf("switching event %d\n", data->event);
 
   std::cout << "Put event in\n";
-  argv[0] = LOCAL_NUMBER(data->event);
+  //argv[0] = LOCAL_NUMBER(data->event);
 
   std::cout << "initialize local string\n";
   std::cout << "Sending vector data\n";
-  cbPeriodic->Call(3, argv);
+  //cbPeriodic->Call(3, argv);
 }
 
 
