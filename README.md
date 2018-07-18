@@ -35,5 +35,17 @@ deltachat.mrmailbox_send_text_msg(mailbox, chat_id, "Hi, here is my first messag
 
 There are many more functions available that further manage and retrieve contacts, messages, and chats. Learn about all of the functions in API in the [deltachat C documentation](https://deltachat.github.io/deltachat-core/html/).
 
+## Developing
+
+```
+git submodule init
+git submodule update
+cd deltachat-core
+cat README.md
+```
+
+Then, `npm install`. You need to remove `build/` on subsequent installs.
+
 ## License
 GPLv3
+
