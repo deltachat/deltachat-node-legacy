@@ -30,7 +30,9 @@ uintptr_t my_delta_handler(dc_context_t* mailbox, int event, uintptr_t data1, ui
 //      argv[2] = Nan::New<v8::Number>(0);
 //  }
   if (cbPeriodic) {
-    cbPeriodic->Call(1, argv);
+    v8::Local<v8::Value> val = cbPeriodic->Call(1, argv);
+    int32_t ret = val->IntegerValue();
+    return ret;
   }
 
   return 0;
