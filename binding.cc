@@ -21,16 +21,16 @@ uintptr_t my_delta_handler(dc_context_t* mailbox, int event, uintptr_t data1, ui
   printf("got event %d\n", event);
 
   argv[0] = LOCAL_NUMBER(event);
-  switch (event) {
-    case DC_EVENT_CONTACTS_CHANGED:
-      //argv[1] = (data1); << // TODO: cast to uint_32, then v8 integer?
-      //argv[2] = Nan::New<v8::Number>(0);
-    default:
-      //argv[1] = Nan::New<v8::Number>(0);
-      //argv[2] = Nan::New<v8::Number>(0);
+//  switch (event) {
+//    case DC_EVENT_CONTACTS_CHANGED:
+//      argv[1] = (data1); << // TODO: cast to uint_32, then v8 integer?
+//      argv[2] = Nan::New<v8::Number>(0);
+//    default:
+//      argv[1] = Nan::New<v8::Number>(0);
+//      argv[2] = Nan::New<v8::Number>(0);
 //  }
   if (cbPeriodic) {
-    cbPeriodic->Call(2, argv);
+    cbPeriodic->Call(1, argv);
   }
 
   return 0;
