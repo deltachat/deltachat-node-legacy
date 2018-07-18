@@ -17,20 +17,19 @@ Nan::Callback *cbPeriodic;
 
 uintptr_t my_delta_handler(dc_context_t* mailbox, int event, uintptr_t data1, uintptr_t data2)
 {
-  v8::Local<v8::Value> argv[] = {};
-  printf("got event %d\n", event);
+  v8::Local<v8::Value> argv[3];
 
   argv[0] = LOCAL_NUMBER(event);
-//  switch (event) {
-//    case DC_EVENT_CONTACTS_CHANGED:
-//      argv[1] = (data1); << // TODO: cast to uint_32, then v8 integer?
-//      argv[2] = Nan::New<v8::Number>(0);
-//    default:
-//      argv[1] = Nan::New<v8::Number>(0);
-//      argv[2] = Nan::New<v8::Number>(0);
-//  }
+  switch (event) {
+    case DC_EVENT_CONTACTS_CHANGED:
+      argv[1] = Nan::New<v8::Integer>((uint32_t) data1); 
+      argv[2] = Nan::New<v8::Number>(0);
+    default:
+      argv[1] = Nan::New<v8::Number>(0);
+      argv[2] = Nan::New<v8::Number>(0);
+  }
   if (cbPeriodic) {
-    v8::Local<v8::Value> val = cbPeriodic->Call(1, argv);
+    v8::Local<v8::Value> val = cbPeriodic->Call(3, argv);
     int32_t ret = val->IntegerValue();
     return ret;
   }
