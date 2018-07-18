@@ -37,6 +37,43 @@ uintptr_t my_delta_handler(dc_context_t* mailbox, int event, uintptr_t data1, ui
   return 0;
 }
 
+uv_thread_t smtp_id;
+uv_thread_t imap_id;
+
+void imap_thread_func(void* arg)
+{
+  dc_context_t *context = ((dc_context_t*) arg);
+  printf("hi imap %x\n", context);
+
+  while (true) {
+    dc_perform_imap_jobs(context);
+    dc_perform_imap_fetch(context);
+    dc_perform_imap_idle(context);
+  }
+}
+
+void smtp_thread_func(void* arg)
+{
+  printf("hi smtp\n");
+  dc_context_t *context = ((dc_context_t*) arg);
+  while (true) {
+    dc_perform_smtp_jobs(context);
+    dc_perform_smtp_idle(context);
+  }
+}
+
+NAN_METHOD(dc_context_new) {
+  cbPeriodic = new Nan::Callback(info[0].As<v8::Function>());
+  v8::Local<v8::Value> instance = DcContextWrap::NewInstance(my_delta_handler);
+  DcContextWrap *context = Nan::ObjectWrap::Unwrap<DcContextWrap>(instance->ToObject());
+
+  uv_thread_create(&smtp_id, smtp_thread_func, context->state);
+  uv_thread_create(&imap_id, imap_thread_func, context->state);
+
+  info.GetReturnValue().Set(instance);
+}
+
+
 NAN_METHOD(dc_perform_imap_jobs) {
   ASSERT_UNWRAP(info[0], mailbox, DcContextWrap);
   dc_perform_imap_jobs(mailbox->state);
@@ -60,11 +97,6 @@ NAN_METHOD(dc_perform_smtp_jobs) {
 NAN_METHOD(dc_perform_smtp_idle) {
   ASSERT_UNWRAP(info[0], mailbox, DcContextWrap);
   dc_perform_smtp_idle(mailbox->state);
-}
-
-NAN_METHOD(dc_context_new) {
-  cbPeriodic = new Nan::Callback(info[0].As<v8::Function>());
-  info.GetReturnValue().Set(DcContextWrap::NewInstance(my_delta_handler));
 }
 
 NAN_METHOD(dc_set_config) {
