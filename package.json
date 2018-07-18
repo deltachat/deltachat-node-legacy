@@ -9,7 +9,8 @@
     "test": "standard && tape \"test/*.js\"",
     "install": "node-gyp-build",
     "prebuild": "prebuildify -a --strip --preinstall \"node preinstall.js\" --postinstall \"node postinstall.js\"",
-    "prebuild-ia32": "prebuildify -a --strip --preinstall \"node preinstall.js\" --postinstall \"node postinstall.js\" --arch=ia32"
+    "prebuild-ia32": "prebuildify -a --strip --preinstall \"node preinstall.js\" --postinstall \"node postinstall.js\" --arch=ia32",
+    "rebuild-all": "./scripts/rebuild-all"
   },
   "repository": {
     "type": "git",
