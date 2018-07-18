@@ -1,10 +1,14 @@
 #!/bin/bash
 
-echo ">> Moving into deltachat-core/builddir"
-pushd deltachat-core/builddir
+echo ">> Moving into deltachat-core"
+pushd deltachat-core
 
-echo ">> ninja clean"
-ninja clean
+echo ">> Recreating builddir/"
+sudo rm buildir/ -rf && mkdir builddir
+
+echo ">> Moving into builddir"
+pushd builddir
+
 echo ">> ninja"
 ninja
 echo ">> sudo ninja install"
@@ -14,6 +18,7 @@ sudo ldconfig
 
 echo ">> Moving back to deltachat-node"
 popd
+popd
 
 echo ">> Cleaning build/ and npm install"
-rm build/ -rf && npm install
+rm build/ -rf && npm run dev
