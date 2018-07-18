@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "node-gyp rebuild --debug",
+    "dev": "node-gyp rebuild --debug --verbose",
     "fetch-core": "git submodule update --recursive --init",
     "test": "standard && tape \"test/*.js\"",
     "install": "node-gyp-build",
