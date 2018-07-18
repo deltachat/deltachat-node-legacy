@@ -26,9 +26,9 @@ uintptr_t my_delta_handler(dc_context_t* mailbox, int event, uintptr_t data1, ui
       //argv[1] = (data1); << // TODO: cast to uint_32, then v8 integer?
       //argv[2] = Nan::New<v8::Number>(0);
     default:
-      argv[1] = Nan::New<v8::Number>(0);
+      //argv[1] = Nan::New<v8::Number>(0);
       //argv[2] = Nan::New<v8::Number>(0);
-  }
+//  }
   if (cbPeriodic) {
     cbPeriodic->Call(2, argv);
   }
