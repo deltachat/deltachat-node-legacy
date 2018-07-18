@@ -13,41 +13,26 @@
  * deltachat
  **/
 
-struct delta_data {
-  int event;
-  uintptr_t data1;
-  uintptr_t data2;
-};
-
-uv_async_t async;
 Nan::Callback *cbPeriodic;
-
-void asyncmsg(uv_async_t* handle) {
-  delta_data *data = ((delta_data*)handle->data);
-  std::cout << "async\n";
-  Nan::HandleScope scope;
-
-  v8::Local<v8::Value> argv[] = {};
-  printf("switching event %d\n", data->event);
-
-  std::cout << "Put event in\n";
-  //argv[0] = LOCAL_NUMBER(data->event);
-
-  std::cout << "initialize local string\n";
-  std::cout << "Sending vector data\n";
-  //cbPeriodic->Call(3, argv);
-}
-
 
 uintptr_t my_delta_handler(dc_context_t* mailbox, int event, uintptr_t data1, uintptr_t data2)
 {
-  void *ptr = malloc(sizeof(delta_data));
-  ((delta_data*)ptr)->event = event;
-  ((delta_data*)ptr)->data1 = data1;
-  ((delta_data*)ptr)->data2 = data2;
-  async.data = ptr;
-  uv_async_send(&async);
+  v8::Local<v8::Value> argv[] = {};
   printf("got event %d\n", event);
+
+  argv[0] = LOCAL_NUMBER(event);
+  switch (event) {
+    case DC_EVENT_CONTACTS_CHANGED:
+      //argv[1] = (data1); << // TODO: cast to uint_32, then v8 integer?
+      //argv[2] = Nan::New<v8::Number>(0);
+    default:
+      argv[1] = Nan::New<v8::Number>(0);
+      //argv[2] = Nan::New<v8::Number>(0);
+  }
+  if (cbPeriodic) {
+    cbPeriodic->Call(2, argv);
+  }
+
   return 0;
 }
 
@@ -78,8 +63,6 @@ NAN_METHOD(dc_perform_smtp_idle) {
 
 NAN_METHOD(dc_context_new) {
   cbPeriodic = new Nan::Callback(info[0].As<v8::Function>());
-  uv_loop_t* loop = uv_default_loop();
-  uv_async_init(loop, &async, asyncmsg);
   info.GetReturnValue().Set(DcContextWrap::NewInstance(my_delta_handler));
 }
 
@@ -248,7 +231,6 @@ NAN_METHOD(dc_get_msg) {
 
 NAN_METHOD(dc_context_unref) {
   ASSERT_UNWRAP(info[0], mailbox, DcContextWrap);
-  uv_close((uv_handle_t*) &async, NULL);
   dc_context_unref(mailbox->state);
 }
 

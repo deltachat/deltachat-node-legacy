@@ -14,36 +14,21 @@ console.log('Logging in with', argv.email, argv.password)
 
 function cb (event, data1, data2) {
   console.log('called back', event, data1, data2)
+  return 0
 }
 
-var context = new deltachat.dc_context_new(cb, null, null)
-var ret = deltachat.dc_open(context)
+var context = new deltachat.dc_context_new(cb)
+
+deltachat.dc_open(context)
 
 deltachat.dc_set_config(context, 'addr', argv.email)
 deltachat.dc_set_config(context, 'mail_pw', argv.password)
 
 deltachat.dc_configure(context)
 
-const pool = new Pool()
 const deps = {
   deltachat: '.'
 }
-
-const imapJobs = pool.run(function (context, done) {
-  while (true) {
-    console.log('hi')
-    deltachat.dc_perform_imap_jobs(context)
-    deltachat.dc_perform_imap_idle(context)
-    deltachat.dc_perform_imap_fetch(context)
-  }
-}, deps).send(context)
-
-const smtpJobs = pool.run(function (context, done) {
-  while (true) {
-    deltachat.dc_perform_smtp_jobs(context)
-    deltachat.dc_perform_smtp_idle(context)
-  }
-}, deps).send(context)
 
 var connected = deltachat.dc_is_configured(context)
 console.log('connected?', connected)
@@ -62,7 +47,3 @@ setTimeout(function () {
   console.log('connected?', connected)
   deltachat.dc_send_text_msg(context, chat_id, "Hi, here is my first message!");
 }, 30000)
-
-process.on('SIGINT', function () {
-  pool.killAll()
-})
