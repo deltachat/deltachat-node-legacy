@@ -12,19 +12,34 @@
         "src/dc_chatlist_wrap.cc"
       ],
       "libraries": [
-        "../deltachat-core/builddir/src/libdeltachat.so"
+        "../deltachat-core/builddir/src/libdeltachat.a",
+        "../deltachat-core/builddir/libs/libetpan/libetpan.a",
+        "../deltachat-core/builddir/libs/netpgp/libnetpgp.a",
+        "-lsqlite3",
+        "-lsasl2"
       ],
       "conditions": [
         [ 'OS=="mac"', {
           "xcode_settings": {
-            'OTHER_CPLUSPLUSFLAGS' : ['-std=c++11','-stdlib=libc++', '-v'],
-            'OTHER_LDFLAGS': ['-stdlib=libc++'],
-            'GCC_ENABLE_CPP_EXCEPTIONS': 'YES'
+            "OTHER_CPLUSPLUSFLAGS" : [
+              "-std=c++11",
+              "-stdlib=libc++",
+              "-v"
+            ],
+            "OTHER_LDFLAGS": [
+              "-stdlib=libc++"
+            ],
+            "GCC_ENABLE_CPP_EXCEPTIONS": "YES"
           }
         }]
       ],
-      "cflags_cc!": [ "-fno-rtti", "-fno-exceptions" ],
-      "cflags!": [ "-fno-exceptions" ],
+      "cflags_cc!": [
+        "-fno-rtti",
+        "-fno-exceptions"
+      ],
+      "cflags!": [
+        "-fno-exceptions"
+      ],
       "include_dirs": [
         "<!(node -e \"require('nan')\")",
         "deltachat-core/src",

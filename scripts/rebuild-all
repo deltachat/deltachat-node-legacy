@@ -1,23 +1,19 @@
 #!/bin/bash
 
-echo ">> Moving into deltachat-core"
-pushd deltachat-core
+set -e
 
-echo ">> Recreating builddir/"
-sudo rm buildir/ -rf && mkdir builddir
+echo ">> Recreating deltachat-core/builddir/"
+rm deltachat-core/builddir -rf && mkdir -p deltachat-core/builddir
 
-echo ">> Moving into builddir"
-pushd builddir
+echo ">> Moving into deltachat-core/builddir"
+pushd deltachat-core/builddir
 
+echo ">> meson"
+meson --default-library=static
 echo ">> ninja"
-ninja
-echo ">> sudo ninja install"
-sudo ninja install
-echo ">> sudo ldconfig"
-sudo ldconfig
+ninja -v
 
 echo ">> Moving back to deltachat-node"
-popd
 popd
 
 echo ">> Cleaning build/ and npm install"
