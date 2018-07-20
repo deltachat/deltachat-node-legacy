@@ -27,7 +27,7 @@ deltachat.configure()
 var connected = deltachat.is_configured()
 console.log('connected?', connected)
 
-var contact_id = deltachat.create_contact('Karissa', "okdistribute@riseup.net")
+var contact_id = deltachat.create_contact('Karissa', 'okdistribute@riseup.net')
 console.log(contact_id)
 var contact = deltachat.get_contact(contact_id)
 var info = deltachat.contact_get_name_n_addr(contact)
