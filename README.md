@@ -1,36 +1,44 @@
 # deltachat-node
 
-A Node.js API for deltachat-core's native C library. This is a WORK IN
-PROGRESS.
+A Node.js API for deltachat-core's native C library. 
 
 ```
-npm install deltachat-node
+npm install deltachat
 ```
 
 ## Usage
 
 #### Set up
 ```js
-var deltachat = require('deltachat-node')
+var Deltachat = require('deltachat-node')
 
-function my_delta_handler(mailbox, ev, data1, data2) {
+function my_delta_handler(ev, data1, data2) {
   return 0
 }
 
-var mailbox = deltachat.mrmailbox_new(my_delta_handler, null, null)
+var dc = new Deltachat(my_delta_handler, null, null)
 
-deltachat.mrmailbox_set_config(mailbox, "addr", "alice@delta.chat") // use some real test credentials here
-deltachat.mrmailbox_set_config(mailbox, "mail_pw", "***") 
+dc.set_config("addr", "alice@delta.chat") // use some real test credentials here
+dc.set_config(mailbox, "mail_pw", "***") 
 
-deltachat.mrmailbox_configure_and_connect(mailbox)
+dc.configure()
+```
+
+#### Tear Down
+
+This also kills the child processes that are created to handle SMTP and IMAP
+jobs.
+
+```
+dc.unref()
 ```
 
 #### Sending a message
 
 ```js
-var contact_id = deltachat.mrmailbox_create_contact(mailbox, NULL, "bob@delta.chat") // use a real testing address here
-var chat_id = deltachat.mrmailbox_create_chat_by_contact_id(mailbox, contact_id)
-deltachat.mrmailbox_send_text_msg(mailbox, chat_id, "Hi, here is my first message!");
+var contact_id = dc.create_contact(mailbox, NULL, "bob@delta.chat") // use a real testing address here
+var chat_id = dc.create_chat_by_contact_id(mailbox, contact_id)
+dc.send_text_msg(mailbox, chat_id, "Hi, here is my first message!");
 ```
 
 There are many more functions available that further manage and retrieve contacts, messages, and chats. Learn about all of the functions in API in the [deltachat C documentation](https://deltachat.github.io/deltachat-core/html/).
