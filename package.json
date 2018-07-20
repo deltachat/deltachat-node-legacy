@@ -5,12 +5,11 @@
   "main": "index.js",
   "scripts": {
     "dev": "node-gyp rebuild --debug --verbose",
-    "fetch-core": "git submodule update --recursive --init",
+    "preinstall": "git submodule update --recursive --init",
     "test": "standard && tape \"test/*.js\"",
-    "install": "node-gyp-build",
+    "install": "./scripts/rebuild-all",
     "prebuild": "prebuildify -a --strip --preinstall \"node preinstall.js\" --postinstall \"node postinstall.js\"",
-    "prebuild-ia32": "prebuildify -a --strip --preinstall \"node preinstall.js\" --postinstall \"node postinstall.js\" --arch=ia32",
-    "rebuild-all": "./scripts/rebuild-all"
+    "prebuild-ia32": "prebuildify -a --strip --preinstall \"node preinstall.js\" --postinstall \"node postinstall.js\" --arch=ia32"
   },
   "repository": {
     "type": "git",
