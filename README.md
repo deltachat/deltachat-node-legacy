@@ -37,14 +37,10 @@ There are many more functions available that further manage and retrieve contact
 
 ## Developing
 
-```
-git submodule init
-git submodule update
-cd deltachat-core
-cat README.md
-```
+`npm install` should be enough to setup the project and involves doing:
 
-Then, `npm install`. You need to remove `build/` on subsequent installs.
+* Updating and compiling the `deltachat-core` code base
+* Compiling the native addon and linking it with the `deltachat-core`
 
 ## License
 GPLv3
