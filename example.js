@@ -20,15 +20,20 @@ function cb (event, data1, data2) {
   return 0
 }
 
+console.log('starting deltachat')
 var deltachat = new Deltachat(cb)
+
+
+console.log('opening')
 deltachat.open('deltachat')
 
+console.log('set_config')
 deltachat.set_config('addr', argv.email)
 deltachat.set_config('mail_pw', argv.password)
-
+console.log('configuring')
 deltachat.configure()
+console.log('configured?')
 
 var connected = deltachat.is_configured()
 console.log('connected', connected)
-while(true) { }
 

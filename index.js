@@ -5,24 +5,25 @@ var NON_CONTEXT = ['msg', 'chat', 'array', 'chatlist', 'lot', 'contact']
 function Delta (cb) {
   if (!(this instanceof Delta)) return new Delta(cb)
   var context = new deltachat.dc_context_new(cb)
-  setTimeout(function () {
-    while (true) {
-      console.log('imap while')
-      deltachat.perform_imap_jobs(context)
-      deltachat.perform_imap_fetch(context)
-      deltachat.perform_imap_idle(context)
-    }
-  }, 1)
-
-  setTimeout(function () {
-    while (true) {
-      console.log('imap smtp')
-      deltachat.perform_smtp_jobs(context)
-      deltachat.perform_smtp_idle(context)
-    }
-  }, 1)
-
   this.context = context
+  function imapForever () {
+    console.log('imap thread')
+    deltachat.perform_imap_jobs(context)
+    deltachat.perform_imap_fetch(context)
+    deltachat.perform_imap_idle(context)
+    setTimeout(imapForever, 1)
+  }
+  setTimeout(imapForever, 1)
+  console.log('imap done')
+
+  function smtpForever () {
+    console.log('smtp thread')
+    deltachat.perform_smtp_jobs(context)
+    deltachat.perform_smtp_idle(context)
+    setTimeout(smtpForever, 1)
+  }
+  setTimeout(smtpForever, 1)
+  console.log('smtp done')
 }
 
 Object.keys(deltachat).forEach(function (arg) {

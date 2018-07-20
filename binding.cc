@@ -21,10 +21,12 @@ uintptr_t my_delta_handler(dc_context_t* mailbox, int event, uintptr_t data1, ui
 
   argv[0] = LOCAL_NUMBER(event);
   switch (event) {
+    case DC_EVENT_WARNING:
+      printf("DC_EVENT_WARNING %d %s\n", event, (const char*) data2);
     case DC_EVENT_ERROR:
-      printf("DC_EVENT_ERROR %d %s", event, (const char*) data2);
+      printf("DC_EVENT_ERROR %d %s\n", event, (const char*) data2);
     case DC_EVENT_INFO:
-      printf("DC_EVENT_INFO %s", (const char*) data2);
+      printf("DC_EVENT_INFO %s\n", (const char*) data2);
     case DC_EVENT_CONTACTS_CHANGED:
       argv[1] = Nan::New<v8::Integer>((uint32_t) data1); 
       argv[2] = Nan::New<v8::Number>(0);
@@ -60,11 +62,13 @@ NAN_METHOD(perform_imap_jobs) {
 
 NAN_METHOD(perform_imap_fetch) {
   ASSERT_UNWRAP(info[0], mailbox, DcContextWrap);
+  printf("performing imap fetch\n");
   dc_perform_imap_fetch(mailbox->state);
 }
 
 NAN_METHOD(perform_imap_idle) {
   ASSERT_UNWRAP(info[0], mailbox, DcContextWrap);
+  printf("performing imap idle\n");
   dc_perform_imap_idle(mailbox->state);
 }
 
@@ -76,6 +80,7 @@ NAN_METHOD(perform_smtp_jobs) {
 
 NAN_METHOD(perform_smtp_idle) {
   ASSERT_UNWRAP(info[0], mailbox, DcContextWrap);
+  printf("performing smtp idle\n");
   dc_perform_smtp_idle(mailbox->state);
 }
 
