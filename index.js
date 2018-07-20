@@ -1,24 +1,28 @@
-var path = require('path')
-var child = require('child_process')
 var deltachat = require('node-gyp-build')(__dirname)
 
 var NON_CONTEXT = ['msg', 'chat', 'array', 'chatlist', 'lot', 'contact']
 
 function Delta (cb) {
   if (!(this instanceof Delta)) return new Delta(cb)
-  this.context = new deltachat.dc_context_new(cb)
+  var context = new deltachat.dc_context_new(cb)
+  setTimeout(function () {
+    while (true) {
+      console.log('imap while')
+      deltachat.perform_imap_jobs(context)
+      deltachat.perform_imap_fetch(context)
+      deltachat.perform_imap_idle(context)
+    }
+  }, 1)
 
-  this.imap = child.fork(path.join(__dirname, 'imap.js'))
-  this.imap.send({context: this.context})
+  setTimeout(function () {
+    while (true) {
+      console.log('imap smtp')
+      deltachat.perform_smtp_jobs(context)
+      deltachat.perform_smtp_idle(context)
+    }
+  }, 1)
 
-  this.smtp = child.fork(path.join(__dirname, 'smtp.js'))
-  this.smtp.send({context: this.context})
-}
-
-Delta.prototype.unref = function () {
-  this.imap.kill()
-  this.smtp.kill()
-  deltachat.dc_context_unref(this.context)
+  this.context = context
 }
 
 Object.keys(deltachat).forEach(function (arg) {
@@ -26,7 +30,6 @@ Object.keys(deltachat).forEach(function (arg) {
   Delta.prototype[name] = function () {
     var args = Array.from(arguments)
     if (isContextFunction(name)) {
-      console.log(arg, name, this.context)
       args.unshift(this.context)
     }
     return deltachat[arg].apply(this, args)

@@ -14,7 +14,6 @@
  **/
 
 Nan::Callback *cbPeriodic;
-dc_context_t *the_mailbox;
 
 uintptr_t my_delta_handler(dc_context_t* mailbox, int event, uintptr_t data1, uintptr_t data2)
 {
@@ -22,6 +21,10 @@ uintptr_t my_delta_handler(dc_context_t* mailbox, int event, uintptr_t data1, ui
 
   argv[0] = LOCAL_NUMBER(event);
   switch (event) {
+    case DC_EVENT_ERROR:
+      printf("DC_EVENT_ERROR %d %s", event, (const char*) data2);
+    case DC_EVENT_INFO:
+      printf("DC_EVENT_INFO %s", (const char*) data2);
     case DC_EVENT_CONTACTS_CHANGED:
       argv[1] = Nan::New<v8::Integer>((uint32_t) data1); 
       argv[2] = Nan::New<v8::Number>(0);
@@ -44,30 +47,36 @@ NAN_METHOD(dc_context_new) {
 
   v8::Local<v8::Value> instance = DcContextWrap::NewInstance(my_delta_handler);
   DcContextWrap *context = Nan::ObjectWrap::Unwrap<DcContextWrap>(instance->ToObject());
-  the_mailbox = context->state;
 
   info.GetReturnValue().Set(instance);
 }
 
 
 NAN_METHOD(perform_imap_jobs) {
-  dc_perform_imap_jobs(the_mailbox);
+  ASSERT_UNWRAP(info[0], mailbox, DcContextWrap);
+  printf("performing imap jobs\n");
+  dc_perform_imap_jobs(mailbox->state);
 }
 
 NAN_METHOD(perform_imap_fetch) {
-  dc_perform_imap_fetch(the_mailbox);
+  ASSERT_UNWRAP(info[0], mailbox, DcContextWrap);
+  dc_perform_imap_fetch(mailbox->state);
 }
 
 NAN_METHOD(perform_imap_idle) {
-  dc_perform_imap_idle(the_mailbox);
+  ASSERT_UNWRAP(info[0], mailbox, DcContextWrap);
+  dc_perform_imap_idle(mailbox->state);
 }
 
 NAN_METHOD(perform_smtp_jobs) {
-  dc_perform_smtp_jobs(the_mailbox);
+  ASSERT_UNWRAP(info[0], mailbox, DcContextWrap);
+  printf("performing smtp jobs\n");
+  dc_perform_smtp_jobs(mailbox->state);
 }
 
 NAN_METHOD(perform_smtp_idle) {
-  dc_perform_smtp_idle(the_mailbox);
+  ASSERT_UNWRAP(info[0], mailbox, DcContextWrap);
+  dc_perform_smtp_idle(mailbox->state);
 }
 
 NAN_METHOD(dc_set_config) {

@@ -1,8 +1,8 @@
 var deltachat = require('node-gyp-build')(__dirname)
 
-process.on('message', function (msg) {
+module.exports = function () {
   while (true) {
     deltachat.perform_smtp_jobs()
     deltachat.perform_smtp_idle()
   }
-})
+}

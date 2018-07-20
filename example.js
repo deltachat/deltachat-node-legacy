@@ -21,8 +21,7 @@ function cb (event, data1, data2) {
 }
 
 var deltachat = new Deltachat(cb)
-
-deltachat.open()
+deltachat.open('deltachat')
 
 deltachat.set_config('addr', argv.email)
 deltachat.set_config('mail_pw', argv.password)
