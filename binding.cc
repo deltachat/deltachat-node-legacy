@@ -14,6 +14,7 @@
  **/
 
 Nan::Callback *cbPeriodic;
+dc_context_t *the_mailbox;
 
 uintptr_t my_delta_handler(dc_context_t* mailbox, int event, uintptr_t data1, uintptr_t data2)
 {
@@ -24,6 +25,7 @@ uintptr_t my_delta_handler(dc_context_t* mailbox, int event, uintptr_t data1, ui
     case DC_EVENT_CONTACTS_CHANGED:
       argv[1] = Nan::New<v8::Integer>((uint32_t) data1); 
       argv[2] = Nan::New<v8::Number>(0);
+      break;
     default:
       argv[1] = Nan::New<v8::Number>(0);
       argv[2] = Nan::New<v8::Number>(0);
@@ -39,36 +41,33 @@ uintptr_t my_delta_handler(dc_context_t* mailbox, int event, uintptr_t data1, ui
 
 NAN_METHOD(dc_context_new) {
   cbPeriodic = new Nan::Callback(info[0].As<v8::Function>());
+
   v8::Local<v8::Value> instance = DcContextWrap::NewInstance(my_delta_handler);
   DcContextWrap *context = Nan::ObjectWrap::Unwrap<DcContextWrap>(instance->ToObject());
+  the_mailbox = context->state;
 
   info.GetReturnValue().Set(instance);
 }
 
 
-NAN_METHOD(dc_perform_imap_jobs) {
-  ASSERT_UNWRAP(info[0], mailbox, DcContextWrap);
-  dc_perform_imap_jobs(mailbox->state);
+NAN_METHOD(perform_imap_jobs) {
+  dc_perform_imap_jobs(the_mailbox);
 }
 
-NAN_METHOD(dc_perform_imap_fetch) {
-  ASSERT_UNWRAP(info[0], mailbox, DcContextWrap);
-  dc_perform_imap_fetch(mailbox->state);
+NAN_METHOD(perform_imap_fetch) {
+  dc_perform_imap_fetch(the_mailbox);
 }
 
-NAN_METHOD(dc_perform_imap_idle) {
-  ASSERT_UNWRAP(info[0], mailbox, DcContextWrap);
-  dc_perform_imap_idle(mailbox->state);
+NAN_METHOD(perform_imap_idle) {
+  dc_perform_imap_idle(the_mailbox);
 }
 
-NAN_METHOD(dc_perform_smtp_jobs) {
-  ASSERT_UNWRAP(info[0], mailbox, DcContextWrap);
-  dc_perform_smtp_jobs(mailbox->state);
+NAN_METHOD(perform_smtp_jobs) {
+  dc_perform_smtp_jobs(the_mailbox);
 }
 
-NAN_METHOD(dc_perform_smtp_idle) {
-  ASSERT_UNWRAP(info[0], mailbox, DcContextWrap);
-  dc_perform_smtp_idle(mailbox->state);
+NAN_METHOD(perform_smtp_idle) {
+  dc_perform_smtp_idle(the_mailbox);
 }
 
 NAN_METHOD(dc_set_config) {
@@ -772,12 +771,12 @@ NAN_MODULE_INIT(InitAll) {
   EXPORT_FUNCTION(dc_imex);
   EXPORT_FUNCTION(dc_imex_has_backup);
   EXPORT_FUNCTION(dc_check_password);
-  EXPORT_FUNCTION(dc_perform_imap_jobs);
-  EXPORT_FUNCTION(dc_perform_imap_fetch);
-  EXPORT_FUNCTION(dc_perform_imap_idle);
 
-  EXPORT_FUNCTION(dc_perform_smtp_idle);
-  EXPORT_FUNCTION(dc_perform_smtp_jobs);
+  EXPORT_FUNCTION(perform_imap_jobs);
+  EXPORT_FUNCTION(perform_imap_fetch);
+  EXPORT_FUNCTION(perform_imap_idle);
+  EXPORT_FUNCTION(perform_smtp_idle);
+  EXPORT_FUNCTION(perform_smtp_jobs);
 
   EXPORT_FUNCTION(dc_array_get_cnt);
   EXPORT_FUNCTION(dc_array_get_id);
